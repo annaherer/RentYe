@@ -2,17 +2,20 @@ package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class FixedAsset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
-    private String description;
 
+    @NotNull
     @ManyToOne
     private FixedAssetType fixedAssetType;
+
+    @NotBlank
+    private String description;
 
     public Long getId() {
         return id;

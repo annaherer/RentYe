@@ -1,0 +1,25 @@
+table {
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid #0446aa;
+    border-collapse: collapse;
+    text-align: center;
+    vertical-align: center;
+}
+
+th {
+    background-color: #0446aa;
+    color: white;
+}
+
+table.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+}

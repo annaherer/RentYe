@@ -2,7 +2,6 @@ package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
 
 @Entity
 public class TransactionParty {
@@ -22,12 +21,6 @@ public class TransactionParty {
     private Integer flatNumber;
     private String phoneNumber;
     private String email;
-
-    @OneToOne
-    private Tenant tenant;
-
-    @OneToOne
-    private Contractor contractor;
 
     public Long getId() {
         return id;
@@ -131,21 +124,5 @@ public class TransactionParty {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Tenant getTenant() {
-        return tenant;
-    }
-
-    public void setTenant(Tenant tenant) {
-        this.tenant = tenant;
-    }
-
-    public Contractor getContractor() {
-        return contractor;
-    }
-
-    public void setContractor(Contractor contractor) {
-        this.contractor = contractor;
     }
 }

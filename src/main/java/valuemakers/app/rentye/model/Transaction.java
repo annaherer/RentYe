@@ -2,8 +2,9 @@ package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Date;
-import java.util.List;
 
 @Entity
 public class Transaction {
@@ -17,16 +18,25 @@ public class Transaction {
     private Double amount;
     private String settlementType;
     private String description;
-    private Integer sort;
+    private TransactionSort sort;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @NotNull
+    @ManyToOne
     private Apartment apartment;
 
     @OneToOne
     private FixedAsset fixedAsset;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @NotNull
+    @ManyToOne
     private Period period;
+
+    @NotNull
+    @ManyToOne
+    private TransactionParty transactionParty;
+
+    @ManyToOne
+    private Depreciation depreciation;
 
     public Long getId() {
         return id;
@@ -84,11 +94,11 @@ public class Transaction {
         this.description = description;
     }
 
-    public Integer getSort() {
+    public TransactionSort getSort() {
         return sort;
     }
 
-    public void setSort(Integer sort) {
+    public void setSort(TransactionSort sort) {
         this.sort = sort;
     }
 
@@ -114,5 +124,21 @@ public class Transaction {
 
     public void setPeriod(Period period) {
         this.period = period;
+    }
+
+    public TransactionParty getTransactionParty() {
+        return transactionParty;
+    }
+
+    public void setTransactionParty(TransactionParty transactionParty) {
+        this.transactionParty = transactionParty;
+    }
+
+    public Depreciation getDepreciation() {
+        return depreciation;
+    }
+
+    public void setDepreciation(Depreciation depreciation) {
+        this.depreciation = depreciation;
     }
 }

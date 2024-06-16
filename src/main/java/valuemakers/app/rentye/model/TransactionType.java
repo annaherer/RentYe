@@ -1,20 +1,23 @@
 package valuemakers.app.rentye.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import org.hibernate.validator.constraints.UniqueElements;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class TransactionType {
+    public static final Integer TRANSACTION_SORT_REVENUE = 0;
+    public static final Integer TRANSACTION_SORT_COST = 1;
+    public static final Integer TRANSACTION_SORT_PURCHASE = 2;
+    public static final Integer TRANSACTION_SORT_EXCLUDED = 3;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String shortName;
+    @NotBlank(message = "Description must be filled in.")
     private String description;
-    private Integer defaultTransactionSort;
+    @NotNull(message = "Default transaction sort must be filled in.")
+    private TransactionSort defaultTransactionSort;
 
     public Long getId() {
         return id;
@@ -22,14 +25,6 @@ public class TransactionType {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
     }
 
     public String getDescription() {
@@ -40,11 +35,11 @@ public class TransactionType {
         this.description = description;
     }
 
-    public Integer getDefaultTransactionSort() {
+    public TransactionSort getDefaultTransactionSort() {
         return defaultTransactionSort;
     }
 
-    public void setDefaultTransactionSort(Integer defaultTransactionSort) {
+    public void setDefaultTransactionSort(TransactionSort defaultTransactionSort) {
         this.defaultTransactionSort = defaultTransactionSort;
     }
 }

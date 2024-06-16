@@ -1,8 +1,9 @@
 package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import java.util.Date;
+import jakarta.persistence.JoinColumn;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
 @Entity
@@ -10,13 +11,19 @@ public class Contractor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String contactPerson;
 
-    @OneToMany
+    @OneToMany(mappedBy = "contractor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ScheduledPayment> scheduledPayments;
 
+    @NotNull
     @ManyToOne
     private ContractorType contractorType;
+
+    @NotNull
+    @OneToOne
+    private TransactionParty transactionParty;
+
+    private String contactPerson;
 
     public Long getId() {
         return id;
@@ -48,5 +55,13 @@ public class Contractor {
 
     public void setContractorType(ContractorType contractorType) {
         this.contractorType = contractorType;
+    }
+
+    public TransactionParty getTransactionParty() {
+        return transactionParty;
+    }
+
+    public void setTransactionParty(TransactionParty transactionParty) {
+        this.transactionParty = transactionParty;
     }
 }

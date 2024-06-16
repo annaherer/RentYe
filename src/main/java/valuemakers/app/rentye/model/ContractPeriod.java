@@ -2,6 +2,8 @@ package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +12,15 @@ public class ContractPeriod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @ManyToOne
+    private Tenant mainTenant;
+
+    @NotNull
+    @ManyToOne
+    private Contract contract;
+
     private Integer annexNumber;
     private Date dateSigned;
     private Date dateValid;
@@ -18,9 +29,6 @@ public class ContractPeriod {
     private Double monthlyEstimatedServiceCharges;
     private Integer paymentDay;
     private Boolean petsAllowedFlag;
-
-    @ManyToOne
-    private Tenant mainTenant;
 
     public Long getId() {
         return id;
@@ -100,5 +108,13 @@ public class ContractPeriod {
 
     public void setMainTenant(Tenant mainTenant) {
         this.mainTenant = mainTenant;
+    }
+
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 }

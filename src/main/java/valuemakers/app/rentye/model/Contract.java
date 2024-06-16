@@ -2,6 +2,7 @@ package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -10,17 +11,19 @@ public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
-    private Boolean ownUseFlag;
 
+    @NotNull
     @ManyToOne
     private Apartment apartment;
 
-    @OneToMany
+    @OneToMany(mappedBy = "contract", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ContractPeriod> contractPeriods;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private List<Tenant> tenants;
+
+    @NotNull
+    private Boolean ownUseFlag;
 
     public Long getId() {
         return id;

@@ -2,6 +2,7 @@ package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.hibernate.validator.constraints.pl.PESEL;
 
@@ -12,17 +13,27 @@ public class Tenant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @OneToOne
+    private TransactionParty transactionParty;
+
+    @NotBlank(message = "PESEL is required")
     //@PESEL
     private String pesel;
+    //@NotBlank(message = "Personal id number is required")
     @UniqueElements
     private String personalIdNumber;
-    @NotBlank
+    //@NotBlank(message = "Personal id validity is required")
     private Date personalIdValidity;
+    //@NotBlank(message = "Passport number is required")
     @UniqueElements
     private String passportNumber;
-    @NotBlank
+    //@NotBlank(message = "Password validity is required")
     private Date passportValidity;
+    //@NotBlank(message = "Citizenship is required")
     private String citizenship;
+    @NotBlank(message = "Status is required")
     private Boolean status;
 
     public Long getId() {
@@ -87,5 +98,13 @@ public class Tenant {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public TransactionParty getTransactionParty() {
+        return transactionParty;
+    }
+
+    public void setTransactionParty(TransactionParty transactionParty) {
+        this.transactionParty = transactionParty;
     }
 }

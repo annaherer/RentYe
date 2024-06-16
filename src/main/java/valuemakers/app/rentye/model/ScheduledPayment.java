@@ -1,7 +1,11 @@
 package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Date;
 import java.util.List;
 
@@ -10,15 +14,21 @@ public class ScheduledPayment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "Date is required.")
-    private Date date;
-    @NotBlank (message = "Amount is required.")
-    private double amount;
 
+    @NotNull
     @ManyToOne
     private Apartment apartment;
 
-    public Long getId() {
+    @NotNull
+    @ManyToOne
+    private Contractor contractor;
+
+    @NotNull(message = "Date is required.")
+    private Date date;
+    @DecimalMin(value = "0.01", message = "Amount is required.")
+    private double amount;
+
+     public Long getId() {
         return id;
     }
 
@@ -48,5 +58,13 @@ public class ScheduledPayment {
 
     public void setApartment(Apartment apartment) {
         this.apartment = apartment;
+    }
+
+    public Contractor getContractor() {
+        return contractor;
+    }
+
+    public void setContractor(Contractor contractor) {
+        this.contractor = contractor;
     }
 }

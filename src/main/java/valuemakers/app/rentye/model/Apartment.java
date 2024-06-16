@@ -2,6 +2,7 @@ package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
@@ -10,21 +11,6 @@ public class Apartment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String description;
-    private Date acquisitionDate;
-    private Date acceptanceToUseDate;
-    private String country;
-    private String city;
-    private String zip;
-    private String street;
-    private Integer houseNumber;
-    private Integer flatNumber;
-    private Double usableArea;
-    private String notarialActNumber;
-    private String landMortgageRegisterNumber;
-    private Date dateSold;
-    private Boolean status;
 
     @OneToOne
     private Depreciation depreciation;
@@ -34,6 +20,33 @@ public class Apartment {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private List<ContractorType> applicableUtilities;
+
+    @NotBlank(message = "Name is required")
+    private String name;
+    @NotBlank(message = "Description is required")
+    @Size(max=600, message="Description must be at most 600 characters.")
+    private String description;
+    //@NotBlank(message = "Acquisition date is required")
+    private Date acquisitionDate;
+    //@NotBlank(message = "Acceptance to use date is required")
+    private Date acceptanceToUseDate;
+    //@NotBlank(message = "Country is required")
+    private String country;
+    //@NotBlank(message = "City is required")
+    private String city;
+    //@NotBlank(message = "Zip code is required")
+    private String zip;
+    //@NotBlank(message = "Street is required")
+    private String street;
+    //@NotBlank(message = "House number is required")
+    private Integer houseNumber;
+    private Integer flatNumber;
+    //@NotBlank(message = "Usable area is required")
+    private Double usableArea;
+    private String notarialActNumber;
+    private String landMortgageRegisterNumber;
+    private Date dateSold;
+    private Boolean status;
 
     public Long getId() {
         return id;

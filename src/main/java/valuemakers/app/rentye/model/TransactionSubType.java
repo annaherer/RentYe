@@ -1,19 +1,21 @@
 package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class TransactionSubType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String shortName;
-    private String description;
-    private String code;
-    private Integer lastCode;
 
+    @NotNull
     @ManyToOne
     private TransactionType transactionType;
+
+    private String description;
+    private String code;
+    private Integer lastIndex;
 
     public Long getId() {
         return id;
@@ -21,14 +23,6 @@ public class TransactionSubType {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
     }
 
     public String getDescription() {
@@ -48,11 +42,11 @@ public class TransactionSubType {
     }
 
     public Integer getLastCode() {
-        return lastCode;
+        return lastIndex;
     }
 
     public void setLastCode(Integer lastCode) {
-        this.lastCode = lastCode;
+        this.lastIndex = lastCode;
     }
 
     public TransactionType getTransactionType() {

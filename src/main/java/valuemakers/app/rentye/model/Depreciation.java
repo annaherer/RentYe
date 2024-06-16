@@ -10,6 +10,13 @@ public class Depreciation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany(mappedBy = "depreciation", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
+
+    @OneToMany(mappedBy = "depreciation", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<DepreciationTransaction> depreciationTransactions;
+
     @NotBlank(message = "Property price is required.")
     private Double propertyPrice;
     private Double purchaseCost;
@@ -21,12 +28,6 @@ public class Depreciation {
     private Boolean status;
     private Date rate;
     private Double monthlyDepreciationAmount;
-
-    @OneToMany
-    private List<Transaction> transactions;
-
-    @OneToMany
-    private List<DepreciationTransaction> depreciationTransactions;
 
     public Long getId() {
         return id;
