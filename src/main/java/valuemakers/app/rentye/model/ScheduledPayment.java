@@ -2,12 +2,10 @@ package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 public class ScheduledPayment {
@@ -17,14 +15,13 @@ public class ScheduledPayment {
 
     @NotNull
     @ManyToOne
-    private Apartment apartment;
-
-    @NotNull
-    @ManyToOne
-    private Contractor contractor;
+    private ApartmentContractor apartmentContractor;
 
     @NotNull(message = "Date is required.")
-    private Date date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    private LocalDate date;
+
     @DecimalMin(value = "0.01", message = "Amount is required.")
     private double amount;
 
@@ -36,11 +33,11 @@ public class ScheduledPayment {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -52,19 +49,11 @@ public class ScheduledPayment {
         this.amount = amount;
     }
 
-    public Apartment getApartment() {
-        return apartment;
+    public ApartmentContractor getAppartmentContractor() {
+        return apartmentContractor;
     }
 
-    public void setApartment(Apartment apartment) {
-        this.apartment = apartment;
-    }
-
-    public Contractor getContractor() {
-        return contractor;
-    }
-
-    public void setContractor(Contractor contractor) {
-        this.contractor = contractor;
+    public void setApartmentContractor(ApartmentContractor apartmentContractor) {
+        this.apartmentContractor = apartmentContractor;
     }
 }

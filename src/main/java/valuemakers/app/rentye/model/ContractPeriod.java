@@ -1,11 +1,12 @@
 package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 public class ContractPeriod {
@@ -19,16 +20,31 @@ public class ContractPeriod {
 
     @NotNull
     @ManyToOne
+    @Valid
     private Contract contract;
 
-    private Integer annexNumber;
-    private Date dateSigned;
-    private Date dateValid;
-    private Date dateExpired;
-    private Double monthlyRentAmount;
-    private Double monthlyEstimatedServiceCharges;
+    @NotNull
+    private Integer sequenceNumber;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    @NotNull
+    private LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    @NotNull
+    private LocalDate endDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    @NotNull
+    private LocalDate signDate;
+    @NotNull
+    private Double rentAmount;
+    @NotNull
+    private Double serviceChargesAmount;
+    @NotNull
     private Integer paymentDay;
-    private Boolean petsAllowedFlag;
+    @NotNull
+    private Boolean active;
 
     public Long getId() {
         return id;
@@ -36,70 +52,6 @@ public class ContractPeriod {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getAnnexNumber() {
-        return annexNumber;
-    }
-
-    public void setAnnexNumber(Integer annexNumber) {
-        this.annexNumber = annexNumber;
-    }
-
-    public Date getDateSigned() {
-        return dateSigned;
-    }
-
-    public void setDateSigned(Date dateSigned) {
-        this.dateSigned = dateSigned;
-    }
-
-    public Date getDateValid() {
-        return dateValid;
-    }
-
-    public void setDateValid(Date dateValid) {
-        this.dateValid = dateValid;
-    }
-
-    public Date getDateExpired() {
-        return dateExpired;
-    }
-
-    public void setDateExpired(Date dateExpired) {
-        this.dateExpired = dateExpired;
-    }
-
-    public Double getMonthlyRentAmount() {
-        return monthlyRentAmount;
-    }
-
-    public void setMonthlyRentAmount(Double monthlyRentAmount) {
-        this.monthlyRentAmount = monthlyRentAmount;
-    }
-
-    public Double getMonthlyEstimatedServiceCharges() {
-        return monthlyEstimatedServiceCharges;
-    }
-
-    public void setMonthlyEstimatedServiceCharges(Double monthlyEstimatedServiceCharges) {
-        this.monthlyEstimatedServiceCharges = monthlyEstimatedServiceCharges;
-    }
-
-    public Integer getPaymentDay() {
-        return paymentDay;
-    }
-
-    public void setPaymentDay(Integer paymentDay) {
-        this.paymentDay = paymentDay;
-    }
-
-    public Boolean getPetsAllowedFlag() {
-        return petsAllowedFlag;
-    }
-
-    public void setPetsAllowedFlag(Boolean petsAllowedFlag) {
-        this.petsAllowedFlag = petsAllowedFlag;
     }
 
     public Tenant getMainTenant() {
@@ -116,5 +68,69 @@ public class ContractPeriod {
 
     public void setContract(Contract contract) {
         this.contract = contract;
+    }
+
+    public Integer getSequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public void setSequenceNumber(Integer sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public LocalDate getSignDate() {
+        return signDate;
+    }
+
+    public void setSignDate(LocalDate signDate) {
+        this.signDate = signDate;
+    }
+
+    public Double getRentAmount() {
+        return rentAmount;
+    }
+
+    public void setRentAmount(Double monthlyRentAmount) {
+        this.rentAmount = monthlyRentAmount;
+    }
+
+    public Double getServiceChargesAmount() {
+        return serviceChargesAmount;
+    }
+
+    public void setServiceChargesAmount(Double monthlyEstimatedServiceCharges) {
+        this.serviceChargesAmount = monthlyEstimatedServiceCharges;
+    }
+
+    public Integer getPaymentDay() {
+        return paymentDay;
+    }
+
+    public void setPaymentDay(Integer paymentDay) {
+        this.paymentDay = paymentDay;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

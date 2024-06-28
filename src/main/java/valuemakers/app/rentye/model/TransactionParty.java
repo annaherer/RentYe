@@ -9,7 +9,7 @@ public class TransactionParty {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    private String fullName;
+    private String description;
     private String firstName;
     private String secondName;
     private String surname;
@@ -30,12 +30,12 @@ public class TransactionParty {
         this.id = id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getDescription() {
+        return description;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setDescription(String fullName) {
+        this.description = fullName;
     }
 
     public String getFirstName() {

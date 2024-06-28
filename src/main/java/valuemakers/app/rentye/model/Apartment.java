@@ -3,7 +3,9 @@ package valuemakers.app.rentye.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -15,21 +17,20 @@ public class Apartment {
     @OneToOne
     private Depreciation depreciation;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    private List<Contractor> contractors;
+    @OneToMany(mappedBy = "apartment", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    private List<ApartmentContractor> apartmentContractors;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
-    private List<ContractorType> applicableUtilities;
-
-    @NotBlank(message = "Name is required")
-    private String name;
     @NotBlank(message = "Description is required")
     @Size(max=600, message="Description must be at most 600 characters.")
     private String description;
-    //@NotBlank(message = "Acquisition date is required")
-    private Date acquisitionDate;
+    private String detailedDescription;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    private LocalDate acquisitionDate;
     //@NotBlank(message = "Acceptance to use date is required")
-    private Date acceptanceToUseDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    private LocalDate acceptanceToUseDate;
     //@NotBlank(message = "Country is required")
     private String country;
     //@NotBlank(message = "City is required")
@@ -45,8 +46,10 @@ public class Apartment {
     private Double usableArea;
     private String notarialActNumber;
     private String landMortgageRegisterNumber;
-    private Date dateSold;
-    private Boolean status;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    private LocalDate dateSold;
+    private Boolean active;
 
     public Long getId() {
         return id;
@@ -56,12 +59,28 @@ public class Apartment {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Depreciation getDepreciation() {
+        return depreciation;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDepreciation(Depreciation depreciation) {
+        this.depreciation = depreciation;
+    }
+
+    public List<ApartmentContractor> getApartmentContractors() {
+        return apartmentContractors;
+    }
+
+    public void setApartmentContractors(List<ApartmentContractor> apartmentContractors) {
+        this.apartmentContractors = apartmentContractors;
+    }
+
+    public String getDetailedDescription() {
+        return detailedDescription;
+    }
+
+    public void setDetailedDescription(String detailedDescription) {
+        this.detailedDescription = detailedDescription;
     }
 
     public String getDescription() {
@@ -72,19 +91,19 @@ public class Apartment {
         this.description = description;
     }
 
-    public Date getAcquisitionDate() {
+    public LocalDate getAcquisitionDate() {
         return acquisitionDate;
     }
 
-    public void setAcquisitionDate(Date acquisitionDate) {
+    public void setAcquisitionDate(LocalDate acquisitionDate) {
         this.acquisitionDate = acquisitionDate;
     }
 
-    public Date getAcceptanceToUseDate() {
+    public LocalDate getAcceptanceToUseDate() {
         return acceptanceToUseDate;
     }
 
-    public void setAcceptanceToUseDate(Date acceptanceToUseDate) {
+    public void setAcceptanceToUseDate(LocalDate acceptanceToUseDate) {
         this.acceptanceToUseDate = acceptanceToUseDate;
     }
 
@@ -160,43 +179,19 @@ public class Apartment {
         this.landMortgageRegisterNumber = landMortgageRegisterNumber;
     }
 
-    public Date getDateSold() {
+    public LocalDate getDateSold() {
         return dateSold;
     }
 
-    public void setDateSold(Date dateSold) {
+    public void setDateSold(LocalDate dateSold) {
         this.dateSold = dateSold;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public Depreciation getDepreciation() {
-        return depreciation;
-    }
-
-    public void setDepreciation(Depreciation depreciation) {
-        this.depreciation = depreciation;
-    }
-
-    public List<Contractor> getContractors() {
-        return contractors;
-    }
-
-    public void setContractors(List<Contractor> contractors) {
-        this.contractors = contractors;
-    }
-
-    public List<ContractorType> getApplicableUtilities() {
-        return applicableUtilities;
-    }
-
-    public void setApplicableUtilities(List<ContractorType> applicableUtilities) {
-        this.applicableUtilities = applicableUtilities;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

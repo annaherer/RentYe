@@ -63,4 +63,15 @@ public class PeriodController {
         this.periodRepository.delete(period);
         return "redirect:/period/list";
     }
+
+
+    //@GetMapping(value = "/fixedAssetType/delete/{fixedAssetType}")
+    //    public String delete(@PathVariable FixedAssetType fixedAssetType, RedirectAttributes redirectAttributes) {
+    //        try {
+    //            this.fixedAssetTypeRepository.delete(fixedAssetType);
+    //        } catch (DataIntegrityViolationException e) {
+    //            redirectAttributes.addAttribute("message", "Delete restricted: related records exist");
+    //        }
+    //        return "redirect:/fixedAsset/fixedAssetType/list";
+    //    }
 }

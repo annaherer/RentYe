@@ -1,10 +1,12 @@
 package valuemakers.app.rentye.controller.transaction;
 
 import jakarta.validation.Valid;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import valuemakers.app.rentye.model.Transaction;
 import valuemakers.app.rentye.model.TransactionSort;
 import valuemakers.app.rentye.model.TransactionType;
@@ -47,8 +49,7 @@ public class TransactionTypeController {
     }
 
     @GetMapping(value = "/transaction/transactionType/edit/{transactionType}")
-    public String editTransactionType(@PathVariable TransactionType transactionType, Model model) {
-        model.addAttribute("transactionType", transactionType);
+    public String editTransactionType(@PathVariable TransactionType transactionType) {
         return "/transaction/transactionTypeAddEdit";
     }
 
@@ -62,8 +63,12 @@ public class TransactionTypeController {
     }
 
     @GetMapping(value = "/transaction/transactionType/delete/{transactionType}")
-    public String delete(@PathVariable TransactionType transactionType) {
-        this.transactionTypeRepository.delete(transactionType);
+    public String delete(@PathVariable TransactionType transactionType, RedirectAttributes redirectAttributes) {
+        try {
+            this.transactionTypeRepository.delete(transactionType);
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addAttribute("message", "Delete restricted: related records exist");
+        }
         return "redirect:/transaction/transactionType/list";
     }
 }

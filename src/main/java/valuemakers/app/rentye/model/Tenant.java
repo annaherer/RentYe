@@ -1,12 +1,11 @@
 package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.UniqueElements;
-import org.hibernate.validator.constraints.pl.PESEL;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Tenant {
@@ -15,26 +14,23 @@ public class Tenant {
     private Long id;
 
     @NotNull
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Valid
     private TransactionParty transactionParty;
-
-    @NotBlank(message = "PESEL is required")
     //@PESEL
+    //Pesel can't be checked as flats could be rented to foreigners
     private String pesel;
-    //@NotBlank(message = "Personal id number is required")
-    @UniqueElements
     private String personalIdNumber;
-    //@NotBlank(message = "Personal id validity is required")
-    private Date personalIdValidity;
-    //@NotBlank(message = "Passport number is required")
-    @UniqueElements
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    private LocalDate personalIdValidity;
     private String passportNumber;
-    //@NotBlank(message = "Password validity is required")
-    private Date passportValidity;
-    //@NotBlank(message = "Citizenship is required")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    private LocalDate passportValidity;
     private String citizenship;
-    @NotBlank(message = "Status is required")
-    private Boolean status;
+    @NotNull(message = "Status is required")
+    private Boolean active=true;
 
     public Long getId() {
         return id;
@@ -60,11 +56,11 @@ public class Tenant {
         this.personalIdNumber = personalIdNumber;
     }
 
-    public Date getPersonalIdValidity() {
+    public LocalDate getPersonalIdValidity() {
         return personalIdValidity;
     }
 
-    public void setPersonalIdValidity(Date personalIdValidity) {
+    public void setPersonalIdValidity(LocalDate personalIdValidity) {
         this.personalIdValidity = personalIdValidity;
     }
 
@@ -76,11 +72,11 @@ public class Tenant {
         this.passportNumber = passportNumber;
     }
 
-    public Date getPassportValidity() {
+    public LocalDate getPassportValidity() {
         return passportValidity;
     }
 
-    public void setPassportValidity(Date passportValidity) {
+    public void setPassportValidity(LocalDate passportValidity) {
         this.passportValidity = passportValidity;
     }
 
@@ -92,12 +88,12 @@ public class Tenant {
         this.citizenship = citizenship;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setActive(Boolean status) {
+        this.active = status;
     }
 
     public TransactionParty getTransactionParty() {

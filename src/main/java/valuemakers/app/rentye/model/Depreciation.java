@@ -26,7 +26,7 @@ public class Depreciation {
     private Double purchaseCostApportionedToInitialValue;
     private Double initialValue;
     private Boolean status;
-    private Date rate;
+    private Double rate;
     private Double monthlyDepreciationAmount;
 
     public Long getId() {
@@ -101,11 +101,11 @@ public class Depreciation {
         this.status = status;
     }
 
-    public Date getRate() {
+    public Double getRate() {
         return rate;
     }
 
-    public void setRate(Date rate) {
+    public void setRate(Double rate) {
         this.rate = rate;
     }
 

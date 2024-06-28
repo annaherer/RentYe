@@ -1,9 +1,7 @@
 package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
 import java.util.List;
 
 @Entity
@@ -19,11 +17,17 @@ public class Contract {
     @OneToMany(mappedBy = "contract", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ContractPeriod> contractPeriods;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<Tenant> tenants;
 
     @NotNull
-    private Boolean ownUseFlag;
+    private Boolean active;
+
+    @NotNull
+    private Double deposit;
+
+    @NotNull
+    private Double depositHeld;
 
     public Long getId() {
         return id;
@@ -31,14 +35,6 @@ public class Contract {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Boolean getOwnUseFlag() {
-        return ownUseFlag;
-    }
-
-    public void setOwnUseFlag(Boolean ownUseFlag) {
-        this.ownUseFlag = ownUseFlag;
     }
 
     public Apartment getApartment() {
@@ -63,5 +59,29 @@ public class Contract {
 
     public void setTenants(List<Tenant> tenants) {
         this.tenants = tenants;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Double getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(Double deposit) {
+        this.deposit = deposit;
+    }
+
+    public Double getDepositHeld() {
+        return depositHeld;
+    }
+
+    public void setDepositHeld(Double depositHeld) {
+        this.depositHeld = depositHeld;
     }
 }
