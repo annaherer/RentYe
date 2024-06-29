@@ -96,18 +96,25 @@ public class ContractController {
 
     @PostMapping({"/addContract", "/addPeriod"})
     public String processAddContract(@Valid @ModelAttribute ContractPeriod contractPeriod, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+        validateContractDates(contractPeriod, result);
         if (result.hasErrors()) {
             model.addAttribute("operation", "add");
             return "/contract/contractDetails";
         }
         Contract contract = contractPeriod.getContract();
+        boolean newContract = false;
         if (contract.getContractPeriods() == null) {
             contract.setContractPeriods(new ArrayList<>());
+            newContract = true;
         }
         contract.getContractPeriods().add(contractPeriod);
         contractRepository.save(contractPeriod.getContract());
-        redirectAttributes.addAttribute("apartment", contractPeriod.getContract().getApartment().getId());
-        return "redirect:/contract/list";
+        if (newContract) {
+            redirectAttributes.addAttribute("apartment", contractPeriod.getContract().getApartment().getId());
+            return "redirect:/contract/list";
+        }
+        else
+            return "redirect:/contract/details/" + contractPeriod.getId();
     }
 
     @GetMapping("/edit/{contractPeriod}")
@@ -127,7 +134,7 @@ public class ContractController {
         contractRepository.save(contractPeriod.getContract());
         contractPeriodRepository.save(contractPeriod);
         redirectAttributes.addAttribute("apartment", contractPeriod.getContract().getApartment().getId());
-        return "redirect:/contract/list";
+        return "redirect:/contract/details/" + contractPeriod.getId();
     }
 
     @GetMapping("/toggleActivePeriod/{contractPeriod}")
@@ -154,9 +161,10 @@ public class ContractController {
     }
 
     private void validateContractDates(ContractPeriod validatedContractPeriod, BindingResult result) {
-        List<ContractPeriod> contractPeriodList = new ArrayList<ContractPeriod>();
+        List<ContractPeriod> contractPeriodList = new ArrayList<>();
         contractPeriodList.add(validatedContractPeriod);
-        contractPeriodList.addAll(validatedContractPeriod.getContract().getContractPeriods().stream().filter(cp -> !cp.getId().equals(validatedContractPeriod.getId())).toList());
+        if (validatedContractPeriod.getContract().getContractPeriods() != null)
+            contractPeriodList.addAll(validatedContractPeriod.getContract().getContractPeriods().stream().filter(cp -> !cp.getId().equals(validatedContractPeriod.getId())).toList());
 
         LocalDate currentDate = null;
         for(ContractPeriod contractPeriod: contractPeriodList.stream().sorted(Comparator.comparing(ContractPeriod::getSequenceNumber)).toList()) {

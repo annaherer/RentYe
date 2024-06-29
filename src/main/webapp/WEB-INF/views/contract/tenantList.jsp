@@ -21,6 +21,6 @@
 </table>
 <br>
 <div>
-    <a href="./add">Add tenant</a>
+    <a class="btn btn-secondary btn-lg" href="./add">Add tenant</a>
 </div>
 <%@ include file="../footer.jsp" %>

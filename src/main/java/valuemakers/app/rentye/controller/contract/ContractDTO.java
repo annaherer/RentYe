@@ -1,10 +1,7 @@
 package valuemakers.app.rentye.controller.contract;
 
-import org.springframework.cglib.core.Local;
 import valuemakers.app.rentye.model.ContractPeriod;
-
 import java.time.LocalDate;
-import java.util.Date;
 
 public class ContractDTO {
     Long id;

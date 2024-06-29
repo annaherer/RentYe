@@ -54,13 +54,18 @@
     <br>
     <c:if test="${operation == 'edit' || operation == 'add'}">
         <input class="btn btn-secondary btn-lg" type="submit" value="Save">
-        <a href="../details/${contractPeriod.id}">Back</a><br>
+        <c:if test="${operation == 'edit'}">
+            <a href="../details/${contractPeriod.id}">Back</a><br>
+        </c:if>
+        <c:if test="${operation == 'add'}">
+            <a href="./list?apartment=${contractPeriod.contract.apartment.id}">Back to contract list</a><br>
+        </c:if>
     </c:if>
 </form:form>
 
 <c:if test="${operation == 'display'}">
     <a href="../edit/${contractPeriod.id}">Edit</a>
-    <a href="../toggleActivePeriod/${contractPeriod.id}">Toggle period</a>
+    <a href="../toggleActivePeriod/${contractPeriod.id}">Toggle active</a>
     <a href="../list?apartment=${contractPeriod.contract.apartment.id}">Back to contract list</a><br>
     <h2>Contract periods</h2><br>
     <table>

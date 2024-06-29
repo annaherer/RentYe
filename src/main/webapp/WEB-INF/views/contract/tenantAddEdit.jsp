@@ -30,7 +30,7 @@
         PESEL: <form:input type="text" path="pesel"/> <form:errors path="pesel"/><br>
         Active: <form:checkbox path="active"/> <form:errors path="active"/><br>
     </fieldset>
-    <c:if test="${!(operation == 'display')}"> <br><input type="submit" value="Submit"></c:if>
+    <c:if test="${!(operation == 'display')}"> <br><input class="btn btn-secondary btn-lg" type="submit" value="Submit"></c:if>
 </form:form>
 <c:if test="${operation == 'display'}">
     <a href="../list">Go back</a>
