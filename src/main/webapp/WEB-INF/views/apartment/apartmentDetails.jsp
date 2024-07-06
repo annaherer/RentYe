@@ -3,7 +3,7 @@
 <%@ include file="../header.jsp" %>
 <c:set var="dateFieldFormat" value="date"/>
 <c:if test="${operation == 'display'}">
-    <h1>Apartment dashboard</h1>
+    <h1>Apartment details <a class = "error-message">${param.message}</a></h1>
     <c:set var="dateFieldFormat" value="text"/>
 </c:if>
 <c:if test="${operation == 'add'}"> <h1>Add apartment</h1></c:if>

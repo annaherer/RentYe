@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import valuemakers.app.rentye.model.Apartment;
 import valuemakers.app.rentye.model.ApartmentContractor;
 import valuemakers.app.rentye.model.ScheduledPayment;
@@ -29,12 +30,16 @@ public class ApartmentContractorsController {
     }
 
     @PostMapping("/add/{apartment}")
-    public String processAddApartmentContractor(@ModelAttribute ApartmentContractor apartmentContractor, @PathVariable Apartment apartment) {
-        //To do validations: check for duplicates
-        apartmentContractor.setApartment(apartment);
-        apartmentContractor.setSettlePaymentsWithTenant(false);
+    public String processAddApartmentContractor(@ModelAttribute ApartmentContractor apartmentContractor, @PathVariable Apartment apartment, RedirectAttributes redirectAttributes, Model model) {
+        if (apartment.getApartmentContractors().stream().map(ac -> ac.getContractor().getId()).anyMatch(c -> c.equals(apartmentContractor.getContractor().getId())))
+            redirectAttributes.addAttribute("message", "Contractor must be unique within apartment");
+        else {
+            apartment.getApartmentContractors().add(apartmentContractor);
+            apartmentContractor.setApartment(apartment);
+            apartmentContractor.setSettlePaymentsWithTenant(false);
+            apartmentContractorRepository.save(apartmentContractor);
+        }
 
-        apartmentContractorRepository.save(apartmentContractor);
         return "redirect:/apartment/details/" + apartment.getId();
     }
 
