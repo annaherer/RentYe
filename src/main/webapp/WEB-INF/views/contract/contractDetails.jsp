@@ -14,7 +14,7 @@
 
 <form:form method="post" modelAttribute="contractPeriod">
     <fieldset <c:if test="${operation == 'display'}"> disabled = "disabled"</c:if>>
-        <h2>Contract information</h2>
+        <h2>Contract information <a class = "error-message"> <form:errors path = "contract"/></a></h2>
         Active: <form:input type = "text" path="contract.active" readonly="true"/><br>
         Tenants:
         <form:select path="contract.tenants" multiple="true">
@@ -35,14 +35,13 @@
         </form:select><br><br>
         Deposit amount: <form:input type="number" path="contract.deposit"/> <form:errors path="contract.deposit"/><br>
         Deposit held: <form:input type="number" path="contract.depositHeld"/> <form:errors path="contract.depositHeld"/><br>
-        <h2>Contract period (annex) information</h2>
+        <h2>Contract period (annex) information <a class = "error-message"> <form:errors/></a></h2>
         Active: <form:input type = "text" path="active" readonly="true"/><br>
         Period (annex) number: <form:input type="number" path="sequenceNumber" readonly="true"/><br>
         Main tenant: <form:select itemValue="id" itemLabel="transactionParty.description" path="mainTenant.id"
                                   items="${allTenants}"/> <form:errors path="mainTenant.id"/><br>
         Contract term:
-        <form:input type="${dateFieldFormat}" path="startDate"/> <form:errors path="startDate"/> -
-        <form:input type="${dateFieldFormat}" path="endDate"/> <form:errors path="endDate"/><br>
+        <form:input type="${dateFieldFormat}" path="startDate"/> - <form:input type="${dateFieldFormat}" path="endDate"/> <br>
         Date signed: <form:input type="${dateFieldFormat}" path="signDate"/> <form:errors path="signDate"/><br>
         Monthly rent: <form:input type="number" path="rentAmount"/> <form:errors path="rentAmount"/><br>
         Service charges (est.): <form:input type="number" path="serviceChargesAmount"/> <form:errors

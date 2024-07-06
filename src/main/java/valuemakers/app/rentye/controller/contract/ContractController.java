@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import valuemakers.app.rentye.model.Apartment;
@@ -14,6 +15,7 @@ import valuemakers.app.rentye.model.Tenant;
 import valuemakers.app.rentye.repository.ContractPeriodRepository;
 import valuemakers.app.rentye.repository.ContractRepository;
 import valuemakers.app.rentye.repository.TenantRepository;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -96,25 +98,22 @@ public class ContractController {
 
     @PostMapping({"/addContract", "/addPeriod"})
     public String processAddContract(@Valid @ModelAttribute ContractPeriod contractPeriod, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-        validateContractDates(contractPeriod, result);
+        validateContractPeriodsDatesConsistency(contractPeriod, result);
+        validateOverlappingContracts(contractPeriod, result);
+        validateTenants(contractPeriod, result);
+
         if (result.hasErrors()) {
             model.addAttribute("operation", "add");
             return "/contract/contractDetails";
         }
         Contract contract = contractPeriod.getContract();
-        boolean newContract = false;
         if (contract.getContractPeriods() == null) {
             contract.setContractPeriods(new ArrayList<>());
-            newContract = true;
         }
         contract.getContractPeriods().add(contractPeriod);
         contractRepository.save(contractPeriod.getContract());
-        if (newContract) {
-            redirectAttributes.addAttribute("apartment", contractPeriod.getContract().getApartment().getId());
-            return "redirect:/contract/list";
-        }
-        else
-            return "redirect:/contract/details/" + contractPeriod.getId();
+
+        return "redirect:/contract/details/" + contract.getContractPeriods().stream().max(Comparator.comparing(ContractPeriod::getSequenceNumber)).get().getId();
     }
 
     @GetMapping("/edit/{contractPeriod}")
@@ -125,15 +124,18 @@ public class ContractController {
     }
 
     @PostMapping("/edit/{id}")
-    public String processEditContract(@Valid @ModelAttribute ContractPeriod contractPeriod, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-        validateContractDates(contractPeriod, result);
+    public String processEditContract(@Valid @ModelAttribute ContractPeriod contractPeriod, BindingResult result, Model model) {
+        validateContractPeriodsDatesConsistency(contractPeriod, result);
+        validateOverlappingContracts(contractPeriod, result);
+        validateTenants(contractPeriod, result);
+
         if (result.hasErrors()) {
-            model.addAttribute("operation", "add");
+            model.addAttribute("operation", "edit");
             return "/contract/contractDetails";
         }
         contractRepository.save(contractPeriod.getContract());
         contractPeriodRepository.save(contractPeriod);
-        redirectAttributes.addAttribute("apartment", contractPeriod.getContract().getApartment().getId());
+
         return "redirect:/contract/details/" + contractPeriod.getId();
     }
 
@@ -144,8 +146,13 @@ public class ContractController {
             if (previousActive != null) {
                 previousActive.setActive(false);
                 contractPeriodRepository.save(previousActive);
-            }
-            else {
+            } else {
+                Contract activeContract = contractRepository.findByApartmentAndActive(contractPeriod.getContract().getApartment(), true);
+                if (activeContract != null) {
+                    activeContract.setActive(false);
+                    activeContract.getContractPeriods().stream().filter(ContractPeriod::getActive).findFirst().get().setActive(false);
+                    contractRepository.save(activeContract);
+                }
                 contractPeriod.getContract().setActive(true);
                 contractRepository.save(contractPeriod.getContract());
             }
@@ -160,29 +167,55 @@ public class ContractController {
         return "redirect:/contract/details/" + contractPeriod.getId();
     }
 
-    private void validateContractDates(ContractPeriod validatedContractPeriod, BindingResult result) {
+    private void validateContractPeriodsDatesConsistency(ContractPeriod validatedContractPeriod, BindingResult result) {
         List<ContractPeriod> contractPeriodList = new ArrayList<>();
         contractPeriodList.add(validatedContractPeriod);
         if (validatedContractPeriod.getContract().getContractPeriods() != null)
             contractPeriodList.addAll(validatedContractPeriod.getContract().getContractPeriods().stream().filter(cp -> !cp.getId().equals(validatedContractPeriod.getId())).toList());
 
         LocalDate currentDate = null;
-        for(ContractPeriod contractPeriod: contractPeriodList.stream().sorted(Comparator.comparing(ContractPeriod::getSequenceNumber)).toList()) {
+        for (ContractPeriod contractPeriod : contractPeriodList.stream().sorted(Comparator.comparing(ContractPeriod::getSequenceNumber)).toList()) {
             if (contractPeriod.getStartDate().isAfter(contractPeriod.getEndDate())) {
                 String msg = "Start date cannot be after end date";
-                result.addError(new FieldError("contractPeriod", "endDate", msg));
+                result.addError(new ObjectError("contractPeriod", msg));
                 return;
             }
 
             if (currentDate != null) {
-                if(!currentDate.plusDays(1).equals(contractPeriod.getStartDate())) {
-                    String msg = "Inconsistent contract period dates";
-                    result.addError(new FieldError("contractPeriod", "endDate", msg));
+                if (!currentDate.plusDays(1).equals(contractPeriod.getStartDate())) {
+                    String msg = "Inconsistent period dates within contract";
+                    result.addError(new ObjectError("contractPeriod", msg));
                     return;
                 }
             }
 
             currentDate = contractPeriod.getEndDate();
         }
+    }
+
+    private void validateOverlappingContracts(ContractPeriod validatedContractPeriod, BindingResult result) {
+        List<ContractPeriod> allContractPeriods = contractPeriodRepository.findByContractApartment(validatedContractPeriod.getContract().getApartment());
+        if (allContractPeriods.stream().anyMatch(
+                cp -> !cp.getContract().getId().equals(validatedContractPeriod.getContract().getId()) &&
+                        datesOverlap(cp.getStartDate(), cp.getEndDate(), validatedContractPeriod.getStartDate(), validatedContractPeriod.getEndDate())
+        )) {
+            String msg = "Contract period dates collide with different contract for same apartment";
+            result.addError(new ObjectError("contractPeriod", msg));
+        }
+    }
+
+    private void validateTenants(ContractPeriod validatedContractPeriod, BindingResult result) {
+        if (validatedContractPeriod.getContract().getTenants() == null || validatedContractPeriod.getContract().getTenants().isEmpty())
+            result.addError(new FieldError("contractPeriod", "contract", "Contract must have some tenants assigned"));
+        else if (validatedContractPeriod.getMainTenant() == null)
+            result.addError(new ObjectError("contractPeriod", "Main tenant must be assigned to period"));
+        else if (validatedContractPeriod.getContract().getTenants().stream().map(Tenant::getId).noneMatch(t -> t.equals(validatedContractPeriod.getMainTenant().getId()))) {
+            result.addError(new ObjectError("contractPeriod", "Main tenant in period must be assigned to contract"));
+        }
+    }
+
+    boolean datesOverlap(LocalDate period1Start, LocalDate period1End, LocalDate period2Start, LocalDate period2End) {
+        return (period1Start.equals(period2End) || period1Start.isBefore(period2End)) &&
+                (period1End.equals(period2Start) || period1End.isAfter(period2Start));
     }
 }
