@@ -18,7 +18,7 @@
             <td>${contract.mainTenant}</td>
             <td>
                 <a href="./details/${contract.lastContractPeriod.id}">Details</a>
-                <a href="./delete/${contract.lastContractPeriod.id}">Delete</a>
+                <a href="./deleteContract/${contract.id}">Delete</a>
             </td>
         </tr>
     </c:forEach>
@@ -26,5 +26,6 @@
 <br>
 <div>
     <a href="./addContract?apartment=${apartment.id}">Add contract</a>
+    <a href="../apartment/list">Back to apartments</a>
 </div>
 <%@ include file="../footer.jsp" %>

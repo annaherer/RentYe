@@ -139,6 +139,36 @@ public class ContractController {
         return "redirect:/contract/details/" + contractPeriod.getId();
     }
 
+    @GetMapping("/deleteContract/{contract}")
+    public String deleteContract(@PathVariable Contract contract, RedirectAttributes redirectAttributes) {
+        Apartment apartment = contract.getApartment();
+        contractRepository.delete(contract);
+        redirectAttributes.addAttribute("apartment", apartment.getId());
+        return "redirect:/contract/list";
+    }
+
+    @GetMapping("/deleteContractPeriod/{contractPeriod}")
+    public String deleteContract(@PathVariable ContractPeriod contractPeriod, RedirectAttributes redirectAttributes) {
+        Contract contract = contractPeriod.getContract();
+
+        if (contract.getContractPeriods() == null || contract.getContractPeriods().size() == 1) {
+            redirectAttributes.addAttribute("message", "Can't remove the only period in the contract, please remove contract instead");
+        } else if (!contractPeriod.getSequenceNumber().equals(contract.getContractPeriods().stream().max(Comparator.comparing(ContractPeriod::getSequenceNumber)).get().getSequenceNumber())) {
+            redirectAttributes.addAttribute("message", "Only the last contract period can be removed");
+        }
+        else {
+            if (contractPeriod.getActive()) {
+                contract.setActive(false);
+                contractRepository.save(contract);
+            }
+
+            contract.getContractPeriods().remove(contractPeriod);
+            contractPeriodRepository.delete(contractPeriod);
+        }
+
+        return "redirect:/contract/details/" + contract.getContractPeriods().stream().max(Comparator.comparing(ContractPeriod::getSequenceNumber)).get().getId();
+    }
+
     @GetMapping("/toggleActivePeriod/{contractPeriod}")
     public String toggleActivePeriod(@PathVariable ContractPeriod contractPeriod) {
         if (!contractPeriod.getActive()) {

@@ -11,10 +11,10 @@ public class Depreciation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "depreciation", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "depreciation", fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     private List<Transaction> transactions;
 
-    @OneToMany(mappedBy = "depreciation", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "depreciation", fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     private List<DepreciationTransaction> depreciationTransactions;
 
     @NotBlank(message = "Property price is required.")

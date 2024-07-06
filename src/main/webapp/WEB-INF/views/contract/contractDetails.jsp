@@ -4,7 +4,7 @@
 
 <c:set var="dateFieldFormat" value="date"/>
 <c:if test="${operation == 'display'}">
-    <h1>Contract for apartment ${contractPeriod.contract.apartment.description}</h1>
+    <h1>Contract for apartment ${contractPeriod.contract.apartment.description} <a class = "error-message">${param.message}</a></h1>
     <c:set var="dateFieldFormat" value="text"/>
 </c:if>
 <c:if test="${operation == 'add'}"><h1>New contract for
@@ -87,7 +87,7 @@
                 <td>${contractPeriodFromList.active}</td>
                 <td>
                     <a href="../details/${contractPeriodFromList.id}">Details</a>
-                    <a href="../deletePeriod/${contractPeriodFromList.id}">Delete</a>
+                    <a href="../deleteContractPeriod/${contractPeriodFromList.id}">Delete</a>
                 </td>
             </tr>
         </c:forEach>

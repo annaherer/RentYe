@@ -17,7 +17,7 @@ public class Contract {
     @OneToMany(mappedBy = "contract", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ContractPeriod> contractPeriods;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH})
     private List<Tenant> tenants;
 
     @NotNull
