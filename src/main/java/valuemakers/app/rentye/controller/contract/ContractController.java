@@ -14,11 +14,11 @@ import valuemakers.app.rentye.model.Tenant;
 import valuemakers.app.rentye.repository.ContractPeriodRepository;
 import valuemakers.app.rentye.repository.ContractRepository;
 import valuemakers.app.rentye.repository.TenantRepository;
-
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -37,7 +37,7 @@ public class ContractController {
     }
 
     @ModelAttribute("allTenants")
-    public Collection<Tenant> allTenants() {
+    public Collection<Tenant> getAllTenants() {
         return tenantRepository.findAll();
     }
 
@@ -60,7 +60,7 @@ public class ContractController {
     }
 
     @GetMapping("/details/{contractPeriod}")
-    public String displayContract(@PathVariable ContractPeriod contractPeriod, Model model) {
+    public String contractDetails(@PathVariable ContractPeriod contractPeriod, Model model) {
         model.addAttribute("operation", "display");
         model.addAttribute("contractPeriod", contractPeriod);
         model.addAttribute("contractPeriodsList", contractPeriod.getContract().getContractPeriods().stream().sorted(Comparator.comparing(ContractPeriod::getSequenceNumber).reversed()).toList());

@@ -12,8 +12,7 @@
             <td>${apartment.description}</td>
             <td>${apartment.active}</td>
             <td>
-                <a href="../dashboard/display/${apartment.id}">Dashboard</a>
-                <a href="./edit/${apartment.id}">Edit</a>
+                <a href="./details/${apartment.id}">Details</a>
                 <a href="./delete/${apartment.id}">Delete</a>
                 <a href="/contract/list?apartment=${apartment.id}">Contracts</a>
             </td>

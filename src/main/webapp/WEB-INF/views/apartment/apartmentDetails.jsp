@@ -26,12 +26,22 @@
         Active: <form:checkbox path="active"/> <form:errors path="active"/><br>
         Date sold: <form:input type="${dateFieldFormat}" path="dateSold"/> <form:errors path="dateSold"/><br>
     </fieldset>
-    <c:if test="${!(operation == 'display')}"> <br><input class="btn btn-secondary btn-lg" type="submit" value="Submit"></c:if>
+    <br>
+    <c:if test="${operation == 'edit' || operation == 'add'}">
+        <input class="btn btn-secondary btn-lg" type="submit" value="Save">
+        <c:if test="${operation == 'edit'}">
+            <a href="../details/${apartment.id}">Back</a><br>
+        </c:if>
+        <c:if test="${operation == 'add'}">
+            <a href="./list">Back to apartment list</a><br>
+        </c:if>
+    </c:if>
 </form:form>
 
 <%-- Content displayed in Dashboard mode only --%>
 <c:if test="${operation == 'display'}">
-    <a class="btn btn-secondary btn-lg" href="../../apartment/list" role="button">Go back</a>
+    <a href="../edit/${apartment.id}">Edit</a>
+    <a class="btn btn-secondary btn-lg" href="../list" role="button">Go back</a>
 
     <%-- Contractors assigned to apartment --%>
     <br>
@@ -51,21 +61,21 @@
                 <td>${apartmentContractor.settlePaymentsWithTenant}</td>
                 <td>
                     <a href="/contractor/contractor/display/${apartmentContractor.contractor.id}">Display</a>
-                    <a href="../toggleContractorSettlement/${apartmentContractor.id}">Toggle settlement</a>
-                    <a href="../display/${apartment.id}?apartmentContractor=${apartmentContractor.id}">Payment schedule</a>
-                    <a href="../removeApartmentContractor/${apartmentContractor.id}">Delete</a>
+                    <a href="../contractors/toggleSettlement/${apartmentContractor.id}">Toggle settlement</a>
+                    <a href="../details/${apartment.id}?apartmentContractor=${apartmentContractor.id}">Payment schedule</a>
+                    <a href="../contractors/delete/${apartmentContractor.id}">Delete</a>
                 </td>
             </tr>
         </c:forEach>
     </table>
     <br>
-    <form:form action="../addApartmentContractor/${apartment.id}" method="post" modelAttribute="apartmentContractor">
+    <form:form action="../contractors/add/${apartment.id}" method="post" modelAttribute="apartmentContractor">
         Contractor: <form:select itemValue="id" itemLabel="transactionParty.description" path="contractor.id" items="${contractors}"/>
         <input class="btn btn-secondary btn-sm" type="submit" value="Add contractor to apartment">
     </form:form>
 
     <c:if test="${apartmentContractor.id > 0}">
-        <%-- Contractors assigned to apartment --%>
+        <%-- Payment schedule for contractor --%>
         <br>
         <br>
         <h2>Payment schedule for contractor ${apartmentContractor.contractor.transactionParty.description}</h2>
@@ -80,13 +90,13 @@
                     <td>${scheduledPayment.date}</td>
                     <td>${scheduledPayment.amount}</td>
                     <td>
-                        <a href="../removeScheduledPayment/${scheduledPayment.id}">Delete</a>
+                        <a href="../contractors/deleteScheduledPayment/${scheduledPayment.id}">Delete</a>
                     </td>
                 </tr>
             </c:forEach>
         </table>
         <br>
-        <form:form action="../addScheduledPayment/${apartmentContractor.id}" method="post" modelAttribute="scheduledPayment">
+        <form:form action="../contractors/addScheduledPayment/${apartmentContractor.id}" method="post" modelAttribute="scheduledPayment">
             <form:input type="date" path="date"/> <form:errors path="date"/>
             <form:input type="number" path="amount"/> <form:errors path="amount"/>
             <input class="btn btn-secondary btn" type="submit" value="Add scheduled payment">

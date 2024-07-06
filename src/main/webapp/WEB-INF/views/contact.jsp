@@ -45,10 +45,10 @@
         <th></th>
     </tr>
         <tr>
-            <td href=https://www.google.pl/maps/place/Prosta+20,+00-001+Warszawa/@52.2327207,20.9901553,17z/data=!3m1!4b1!4m6!3m5!1s0x471ecdaf9f261849:0x3ed6ea453a4359fc!8m2!3d52.2327207!4d20.9927302!16s%2Fg%2F11t71nj5jf?entry=ttu">We work, Prosta 20</td>
-            <td href="mailto: hello@rentye.com">hello@rentye.com</td>
-            <td href="https://www.linkedin.com/">LinkedIn</td>
-            <td href="https://www.twitter.com/">X</td>
+            <td> <a href=https://www.google.pl/maps/place/Prosta+20,+00-001+Warszawa/@52.2327207,20.9901553,17z/data=!3m1!4b1!4m6!3m5!1s0x471ecdaf9f261849:0x3ed6ea453a4359fc!8m2!3d52.2327207!4d20.9927302!16s%2Fg%2F11t71nj5jf?entry=ttu">We work, Prosta 20 </a></td>
+            <td> <a href="mailto: hello@rentye.com">hello@rentye.com</a></td>
+            <td> <a href="https://www.linkedin.com/">LinkedIn</a></td>
+            <td> <a href="https://www.twitter.com/">X</a></td>
         </tr>
 </table>
 </body>

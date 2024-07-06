@@ -19,7 +19,7 @@
      style="color: white" style="align-items: center">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">RentYe</a>
-        <a class="navbar-brand" href="/apartment/apartment/list">Apartments</a>
+        <a class="navbar-brand" href="/apartment/list">Apartments</a>
         <%--<a class="navbar-brand" href="/contract/list">Contracts</a>--%>
         <a class="navbar-brand" href="/contract/tenant/list">Tenants</a>
         <a class="navbar-brand" href="/inProgress">Transactions</a> <%--/transaction/list--%>
