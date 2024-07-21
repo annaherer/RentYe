@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="header.jsp" %>
-<h1>Account profile for ${userDetails.username}</h1>
+<h1>Account profile for ${userDetails.username} <a class="error-message">${param.errorMessage}</a><a class="confirm-message">${param.confirmMessage}</a></h1>
 <form:form method="post" modelAttribute="userAccountReducedDTO">
     Email: <form:input type="email" path="email"/> <form:errors path="email"/><br>
     First name: <form:input type="text" path="firstName"/> <form:errors path="firstName"/><br>

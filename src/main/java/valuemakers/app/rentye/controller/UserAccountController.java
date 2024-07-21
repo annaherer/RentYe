@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import valuemakers.app.rentye.ChangePasswordDTO;
 import valuemakers.app.rentye.RentYeUserDetails;
 import valuemakers.app.rentye.RentYeUserDetailsManager;
 import valuemakers.app.rentye.UserAccountReducedDTO;
@@ -19,8 +24,10 @@ import valuemakers.app.rentye.UserAccountReducedDTO;
 @Controller
 public class UserAccountController {
     private RentYeUserDetailsManager userDetailsManager;
-    public UserAccountController(RentYeUserDetailsManager userDetailsManager) {
+    private PasswordEncoder passwordEncoder;
+    public UserAccountController(RentYeUserDetailsManager userDetailsManager, PasswordEncoder passwordEncoder) {
         this.userDetailsManager = userDetailsManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @ModelAttribute("userDetails")
@@ -64,7 +71,27 @@ public class UserAccountController {
     }
 
     @GetMapping("/changePassword")
-    public String changePassword() {
+    public String changePassword(Model model) {
+        model.addAttribute("changePasswordDTO", new ChangePasswordDTO());
         return "changePassword";
+    }
+
+    @PostMapping("/changePassword")
+    public String changePasswordPost(@ModelAttribute ChangePasswordDTO changePasswordDTO, @ModelAttribute("userDetails") RentYeUserDetails userDetails, RedirectAttributes redirectAttributes) {
+        String newPassword = changePasswordDTO.getNewPassword();
+
+        if (!newPassword.equals(changePasswordDTO.getNewPasswordRetyped()))
+            redirectAttributes.addAttribute("errorMessage", "Retyped password does not match");
+        else if (newPassword.isEmpty())
+            redirectAttributes.addAttribute("errorMessage", "Password can't be blank");
+        else {
+            String encodedPassword = passwordEncoder.encode(newPassword);
+            userDetailsManager.changePassword("", encodedPassword);
+            Authentication authentication = new PreAuthenticatedAuthenticationToken(userDetails, encodedPassword, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            redirectAttributes.addAttribute("confirmMessage", "Password changed successfully");
+        }
+
+        return "redirect:/accountProfile";
     }
 }

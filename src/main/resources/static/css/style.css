@@ -29,6 +29,11 @@ body {
     color: red;
 }
 
+.confirm-message {
+    font-size: 75%;
+    color: blue;
+}
+
 #page-container {
     position: relative;
     min-height: 100vh;
