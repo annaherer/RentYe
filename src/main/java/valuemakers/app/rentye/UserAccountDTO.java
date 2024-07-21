@@ -1,9 +1,9 @@
-package valuemakers.app.rentye.controller;
+package valuemakers.app.rentye;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class UserAccountAdminDTO extends UserAccountDTO {
+public class UserAccountDTO extends UserAccountReducedDTO {
     private Long id;
     @NotBlank
     private String username;

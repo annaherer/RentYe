@@ -1,5 +1,6 @@
 package valuemakers.app.rentye;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -9,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import valuemakers.app.rentye.model.UserAccount;
 import valuemakers.app.rentye.repository.UserAccountRepository;
 
 @Configuration
@@ -38,10 +38,10 @@ public class RentYeWebSecurityConfig {
     }
 
     @Bean
-    RentYeUserDetailsManager users(PasswordEncoder passwordEncoder, UserAccountRepository userAccountRepository) {
-        RentYeUserDetailsManager users = new RentYeUserDetailsManager(userAccountRepository);
+    RentYeUserDetailsManager users(PasswordEncoder passwordEncoder, UserAccountRepository userAccountRepository, ModelMapper modelMapper) {
+        RentYeUserDetailsManager users = new RentYeUserDetailsManager(userAccountRepository, modelMapper);
         if (users.userCount() == 0) {
-            UserAccount admin = new UserAccount();
+            UserAccountDTO admin = new UserAccountDTO();
             admin.setUsername("admin");
             admin.setPassword(passwordEncoder.encode("password"));
             admin.setEmail("admin@rentye.com");

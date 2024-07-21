@@ -2,9 +2,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ include file="header.jsp" %>
 <c:set var="operation" value="Add"/>
-<c:if test="${userAccountAdminDTO.id > 0}"> <c:set var="operation" value="Edit"/> </c:if>
-<h1>${operation} user account<a class="error-message"> <form:errors path="userAccountAdminDTO"/></a></h1>
-<form:form method="post" modelAttribute="userAccountAdminDTO">
+<c:if test="${userAccountDTO.id > 0}"> <c:set var="operation" value="Edit"/> </c:if>
+<h1>${operation} user account<a class="error-message"> <form:errors path="userAccountDTO"/></a></h1>
+<form:form method="post" modelAttribute="userAccountDTO">
     Username:
     <c:if test="${operation eq 'Edit'}"> <form:input type="text" path="username" readonly="true"/> </c:if>
     <c:if test="${operation eq 'Add'}"> <form:input type="text" path="username"/> <form:errors path="username"/></c:if>

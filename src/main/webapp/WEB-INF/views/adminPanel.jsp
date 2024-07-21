@@ -11,17 +11,17 @@
         <th>Enabled</th>
         <th>Actions</th>
     </tr>
-    <c:forEach var="userAccount" items="${allUsers}">
+    <c:forEach var="userDetails" items="${allUsers}">
         <tr>
-            <td>${userAccount.username}</td>
-            <td>${userAccount.email}</td>
-            <td>${userAccount.firstName} ${userAccount.lastName}</td>
-            <td>${userAccount.admin}</td>
-            <td>${userAccount.enabled}</td>
+            <td>${userDetails.userAccountDTO.username}</td>
+            <td>${userDetails.userAccountDTO.email}</td>
+            <td>${userDetails.userAccountDTO.firstName} ${userDetails.userAccountDTO.lastName}</td>
+            <td>${userDetails.userAccountDTO.admin}</td>
+            <td>${userDetails.userAccountDTO.enabled}</td>
             <td>
-                <c:if test="${not(userAccount.username eq username)}">
-                    <a href="./editUser/${userAccount.id}">Edit</a>
-                    <a href="./deleteUser/${userAccount.id}">Delete</a>
+                <c:if test="${not(userDetails.userAccountDTO.username eq username)}">
+                    <a href="./editUser/${userDetails.userAccountDTO.id}">Edit</a>
+                    <a href="./deleteUser/${userDetails.userAccountDTO.id}">Delete</a>
                 </c:if>
             </td>
         </tr>

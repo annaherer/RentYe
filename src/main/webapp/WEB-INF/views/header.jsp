@@ -61,7 +61,7 @@
                         <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             <sec:authentication var = "username" property="name"/>
-                            <sec:authentication var = "userFirstName" property="principal.userAccount.firstName"/>
+                            <sec:authentication var = "userFirstName" property="principal.userAccountDTO.firstName"/>
                             Welcome,
                             <c:if test="${empty userFirstName}">${username}</c:if>
                             <c:if test="${not empty userFirstName}">${userFirstName}</c:if>

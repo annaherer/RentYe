@@ -4,28 +4,28 @@ import jakarta.validation.Valid;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import valuemakers.app.rentye.model.UserAccount;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class RentYeUserDetails implements UserDetails {
     @Valid
-    private UserAccount userAccount;
+    private UserAccountDTO userAccountDTO;
 
-    public RentYeUserDetails(UserAccount userAccount) {
-        this.userAccount = userAccount;
+    public RentYeUserDetails(UserAccountDTO userAccountDTO) {
+        this.userAccountDTO = userAccountDTO;
     }
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        if (userAccount == null) {
+        if (userAccountDTO == null) {
             return null;
         }
 
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        if (userAccount.getAdmin()) {
+        if (userAccountDTO.getAdmin()) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 
@@ -34,12 +34,12 @@ public class RentYeUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return userAccount.getPassword();
+        return userAccountDTO.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return userAccount.getUsername();
+        return userAccountDTO.getUsername();
     }
 
     @Override
@@ -59,10 +59,10 @@ public class RentYeUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return userAccount.getEnabled();
+        return userAccountDTO.getEnabled();
     }
 
-    public UserAccount getUserAccount() {
-        return userAccount;
+    public UserAccountDTO getUserAccountDTO() {
+        return userAccountDTO;
     }
 }

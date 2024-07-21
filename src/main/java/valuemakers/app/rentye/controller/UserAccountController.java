@@ -1,7 +1,6 @@
 package valuemakers.app.rentye.controller;
 
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,17 +14,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import valuemakers.app.rentye.RentYeUserDetails;
 import valuemakers.app.rentye.RentYeUserDetailsManager;
-import valuemakers.app.rentye.repository.UserAccountRepository;
+import valuemakers.app.rentye.UserAccountReducedDTO;
 
 @Controller
 public class UserAccountController {
     private RentYeUserDetailsManager userDetailsManager;
-    private ModelMapper modelMapper;
-    private UserAccountRepository userAccountRepository;
-    public UserAccountController(RentYeUserDetailsManager userDetailsManager, ModelMapper modelMapper, UserAccountRepository userAccountRepository) {
+    public UserAccountController(RentYeUserDetailsManager userDetailsManager) {
         this.userDetailsManager = userDetailsManager;
-        this.modelMapper = modelMapper;
-        this.userAccountRepository = userAccountRepository;
     }
 
     @ModelAttribute("userDetails")
@@ -40,26 +35,26 @@ public class UserAccountController {
 
     @GetMapping("/accountProfile")
     public String accountProfileSave(Model model, @ModelAttribute("userDetails") RentYeUserDetails userDetails) {
-        UserAccountDTO userAccountDTO = modelMapper.map(userDetails.getUserAccount(), UserAccountDTO.class);
-        model.addAttribute("userAccountDTO", userAccountDTO);
+        UserAccountReducedDTO userAccountReducedDTO = userDetails.getUserAccountDTO();
+        model.addAttribute("userAccountReducedDTO", userAccountReducedDTO);
         return "accountProfile";
     }
 
     @PostMapping("/accountProfile")
-    public String accountProfile(@ModelAttribute("userDetails") RentYeUserDetails userDetails, @Valid @ModelAttribute UserAccountDTO userAccountDTO, BindingResult result) {
-        userAccountDTO.normalizeStringAttributes();
+    public String accountProfile(@ModelAttribute("userDetails") RentYeUserDetails userDetails, @Valid @ModelAttribute UserAccountReducedDTO userAccountReducedDTO, BindingResult result) {
+        userAccountReducedDTO.normalizeStringAttributes();
 
-        if (!userDetails.getUserAccount().getEmail().equals(userAccountDTO.getEmail()) &&
-                userAccountRepository.findByEmail(userAccountDTO.getEmail())!=null)
-            result.addError(new FieldError("userAccountDTO", "email", "Email already exists"));
+        if (!userDetails.getUserAccountDTO().getEmail().equals(userAccountReducedDTO.getEmail()) &&
+                userDetailsManager.userEmailExists(userAccountReducedDTO.getEmail()))
+            result.addError(new FieldError("userAccountReducedDTO", "email", "Email already exists"));
 
         if (result.hasErrors()) {
             return "accountProfile";
         }
 
-        userDetails.getUserAccount().setEmail(userAccountDTO.getEmail());
-        userDetails.getUserAccount().setFirstName(userAccountDTO.getFirstName());
-        userDetails.getUserAccount().setLastName(userAccountDTO.getLastName());
+        userDetails.getUserAccountDTO().setEmail(userAccountReducedDTO.getEmail());
+        userDetails.getUserAccountDTO().setFirstName(userAccountReducedDTO.getFirstName());
+        userDetails.getUserAccountDTO().setLastName(userAccountReducedDTO.getLastName());
         userDetailsManager.updateUser(userDetails);
 
         Authentication authentication = new PreAuthenticatedAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());

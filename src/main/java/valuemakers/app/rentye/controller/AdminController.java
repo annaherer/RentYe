@@ -1,9 +1,9 @@
 package valuemakers.app.rentye.controller;
 
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import valuemakers.app.rentye.RentYeUserDetails;
 import valuemakers.app.rentye.RentYeUserDetailsManager;
-import valuemakers.app.rentye.model.UserAccount;
-import valuemakers.app.rentye.repository.UserAccountRepository;
+import valuemakers.app.rentye.UserAccountDTO;
 
 import java.util.Collection;
 
@@ -24,20 +23,16 @@ import java.util.Collection;
 @Secured("ROLE_ADMIN")
 public class AdminController {
     private RentYeUserDetailsManager userDetailsManager;
-    private ModelMapper modelMapper;
-    private UserAccountRepository userAccountRepository;
     private PasswordEncoder passwordEncoder;
 
-    public AdminController(RentYeUserDetailsManager userDetailsManager, ModelMapper modelMapper, UserAccountRepository userAccountRepository, PasswordEncoder passwordEncoder) {
+    public AdminController(RentYeUserDetailsManager userDetailsManager, PasswordEncoder passwordEncoder) {
         this.userDetailsManager = userDetailsManager;
-        this.modelMapper = modelMapper;
-        this.userAccountRepository = userAccountRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @ModelAttribute("allUsers")
-    public Collection<UserAccount> getAllUsers() {
-        return userAccountRepository.findAll();
+    public Collection<RentYeUserDetails> getAllUsers() {
+        return userDetailsManager.loadAllUsers();
     }
 
     @GetMapping("/adminPanel")
@@ -47,70 +42,73 @@ public class AdminController {
 
     @GetMapping("/addUser")
     public String addUser(Model model) {
-        UserAccountAdminDTO userAccountAdminDTO = new UserAccountAdminDTO();
-        model.addAttribute("userAccountAdminDTO", userAccountAdminDTO);
+        UserAccountDTO userAccountDTO = new UserAccountDTO();
+        model.addAttribute("userAccountDTO", userAccountDTO);
         return "userAccountAddEdit";
     }
 
     @PostMapping("/addUser")
-    public String addUserPost(@Valid @ModelAttribute UserAccountAdminDTO userAccountAdminDTO, BindingResult result) {
-        userAccountAdminDTO.normalizeStringAttributes();
+    public String addUserPost(@Valid @ModelAttribute UserAccountDTO userAccountDTO, BindingResult result) {
+        userAccountDTO.normalizeStringAttributes();
 
-        if (userAccountAdminDTO.getNewPassword().isEmpty())
-            result.addError(new FieldError("userAccountAdminDTO", "newPassword", "Password cannot be blank"));
+        if (userAccountDTO.getNewPassword().isEmpty())
+            result.addError(new FieldError("userAccountDTO", "newPassword", "Password cannot be blank"));
 
-        if (userAccountRepository.findByUsername(userAccountAdminDTO.getUsername()) != null)
-            result.addError(new FieldError("userAccountAdminDTO", "username", "Username already exists"));
+        if (userDetailsManager.userExists(userAccountDTO.getUsername()))
+            result.addError(new FieldError("userAccountDTO", "username", "Username already exists"));
 
-        if (userAccountRepository.findByEmail(userAccountAdminDTO.getEmail()) != null)
-            result.addError(new FieldError("userAccountAdminDTO", "email", "Email already exists"));
+        if (userDetailsManager.userEmailExists(userAccountDTO.getEmail()))
+            result.addError(new FieldError("userAccountDTO", "email", "Email already exists"));
 
         if (result.hasErrors()) {
             return "userAccountAddEdit";
         }
 
-        userAccountAdminDTO.setPassword(passwordEncoder.encode(userAccountAdminDTO.getNewPassword()));
+        userAccountDTO.setPassword(passwordEncoder.encode(userAccountDTO.getNewPassword()));
 
-        userDetailsManager.createUser(new RentYeUserDetails(modelMapper.map(userAccountAdminDTO, UserAccount.class)));
+        userDetailsManager.createUser(new RentYeUserDetails(userAccountDTO));
 
         return "redirect:./adminPanel";
     }
 
-    @GetMapping("/editUser/{userAccount}")
-    public String editUser(@PathVariable UserAccount userAccount, Model model) {
-        UserAccountAdminDTO userAccountAdminDTO = modelMapper.map(userAccount, UserAccountAdminDTO.class);
-        model.addAttribute("userAccountAdminDTO", userAccountAdminDTO);
+    @GetMapping("/editUser/{id}")
+    public String editUser(@PathVariable Long id, Model model) {
+        UserAccountDTO userAccountDTO = userDetailsManager.loadUserById(id).getUserAccountDTO();
+        model.addAttribute("userAccountDTO", userAccountDTO);
         return "userAccountAddEdit";
     }
 
     @PostMapping("/editUser/{id}")
-    public String editUserPost(@Valid @ModelAttribute UserAccountAdminDTO userAccountAdminDTO, BindingResult result) {
-        userAccountAdminDTO.normalizeStringAttributes();
-        if (!userAccountAdminDTO.getNewPassword().isEmpty())
-            userAccountAdminDTO.setPassword(passwordEncoder.encode(userAccountAdminDTO.getNewPassword()));
+    public String editUserPost(@Valid @ModelAttribute UserAccountDTO userAccountDTO, BindingResult result) {
+        userAccountDTO.normalizeStringAttributes();
+        if (!userAccountDTO.getNewPassword().isEmpty())
+            userAccountDTO.setPassword(passwordEncoder.encode(userAccountDTO.getNewPassword()));
 
-        UserAccount userAccountWithSameEmail = userAccountRepository.findByEmail(userAccountAdminDTO.getEmail());
-        if (userAccountWithSameEmail != null && !userAccountWithSameEmail.getUsername().equals(userAccountAdminDTO.getUsername()))
-            result.addError(new FieldError("userAccountAdminDTO", "email", "Email already exists"));
+        try {
+            if (!userDetailsManager.loadUserByEmail(userAccountDTO.getEmail()).getUsername().equals(userAccountDTO.getUsername()))
+                result.addError(new FieldError("userAccountDTO", "email", "Email already exists"));
+        } catch (UsernameNotFoundException e) {}
 
-        if (SecurityContextHolder.getContext().getAuthentication().getName().equals(userAccountAdminDTO.getUsername()))
-            result.addError(new ObjectError("userAccountAdminDTO", "You can't edit yourself in this panel, go to your account profile"));
+        if (SecurityContextHolder.getContext().getAuthentication().getName().equals(userAccountDTO.getUsername()))
+            result.addError(new ObjectError("userAccountDTO", "You can't edit yourself in this panel, go to your account profile"));
 
         if (result.hasErrors()) {
             return "userAccountAddEdit";
         }
 
-        userDetailsManager.updateUser(new RentYeUserDetails(modelMapper.map(userAccountAdminDTO, UserAccount.class)));
+        userDetailsManager.updateUser(new RentYeUserDetails(userAccountDTO));
 
         return "redirect:../adminPanel";
     }
 
-    @GetMapping("/deleteUser/{userAccount}")
-    public String deleteUser(@PathVariable UserAccount userAccount, RedirectAttributes redirectAttributes) {
-        if (SecurityContextHolder.getContext().getAuthentication().getName().equals(userAccount.getUsername()))
+    @GetMapping("/deleteUser/{id}")
+    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        String username = userDetailsManager.loadUserById(id).getUsername();
+
+        if (SecurityContextHolder.getContext().getAuthentication().getName().equals(username))
             redirectAttributes.addAttribute("message", "You cannot delete yourself");
         else
-            userDetailsManager.deleteUser(userAccount.getUsername());
+            userDetailsManager.deleteUser(username);
 
         return "redirect:../adminPanel";
     }

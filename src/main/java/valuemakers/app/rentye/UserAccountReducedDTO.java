@@ -1,9 +1,9 @@
-package valuemakers.app.rentye.controller;
+package valuemakers.app.rentye;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public class UserAccountDTO {
+public class UserAccountReducedDTO {
     private String firstName;
     private String lastName;
     @NotBlank
