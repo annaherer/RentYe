@@ -24,7 +24,7 @@ public class FixedAssetTypeController {
 
     @GetMapping(value = "/fixedAssetType/list")
     public String getFixedAssetTypes() {
-        return "/fixedasset/fixedAssetTypeList";
+        return "fixedasset/fixedAssetTypeList";
     }
 
     @ModelAttribute("fixedAssetTypes")
@@ -36,13 +36,13 @@ public class FixedAssetTypeController {
     public String addFixedAssetType(Model model) {
         FixedAssetType fixedAssetType = new FixedAssetType();
         model.addAttribute("fixedAssetType", fixedAssetType);
-        return "/fixedasset/fixedAssetTypeAddEdit";
+        return "fixedasset/fixedAssetTypeAddEdit";
     }
 
     @PostMapping("/fixedAssetType/add")
     public String processAddFixedAssetType(@Valid @ModelAttribute FixedAssetType fixedAssetType, BindingResult result) {
         if (result.hasErrors()) {
-            return "/fixedasset/fixedAssetTypeAddEdit";
+            return "fixedasset/fixedAssetTypeAddEdit";
         }
         this.fixedAssetTypeRepository.save(fixedAssetType);
         return "redirect:/fixedAsset/fixedAssetType/list";
@@ -50,13 +50,13 @@ public class FixedAssetTypeController {
 
     @GetMapping(value = "/fixedAssetType/edit/{fixedAssetType}")
     public String editFixedAssetType(@PathVariable FixedAssetType fixedAssetType) {
-        return "/fixedasset/fixedAssetTypeAddEdit";
+        return "fixedasset/fixedAssetTypeAddEdit";
     }
 
     @PostMapping(value = "/fixedAssetType/edit/{id}")
     public String processEditFixedAssetType(@Valid @ModelAttribute FixedAssetType fixedAssetType, BindingResult result) {
         if (result.hasErrors()) {
-            return "/fixedasset/fixedAssetTypeAddEdit";
+            return "fixedasset/fixedAssetTypeAddEdit";
         }
         this.fixedAssetTypeRepository.save(fixedAssetType);
         return "redirect:/fixedAsset/fixedAssetType/list";

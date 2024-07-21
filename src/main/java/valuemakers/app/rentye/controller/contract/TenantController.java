@@ -34,7 +34,7 @@ public class TenantController {
 
     @RequestMapping(value = "/tenant/list", method = RequestMethod.GET)
     public String getTenants() {
-        return "/contract/tenantList";
+        return "contract/tenantList";
     }
 
     @ModelAttribute("contracts")
@@ -57,14 +57,14 @@ public class TenantController {
         Tenant tenant = new Tenant();
         model.addAttribute("tenant", tenant);
         model.addAttribute("operation", "add");
-        return "/contract/tenantAddEdit";
+        return "contract/tenantAddEdit";
     }
 
     @PostMapping(value = "/tenant/add")
     public String processForm(@Valid Tenant tenant, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("operation", "add");
-            return "/contract/tenantAddEdit";
+            return "contract/tenantAddEdit";
         }
         tenantRepository.save(tenant);
         return "redirect:/contract/tenant/list";
@@ -73,13 +73,13 @@ public class TenantController {
     @GetMapping(value = "/tenant/display/{tenant}")
     public String displayTenant(@PathVariable Tenant tenant, Model model) {
         model.addAttribute("operation", "display");
-        return "/contract/tenantAddEdit";
+        return "contract/tenantAddEdit";
     }
 
     @GetMapping(value = "/tenant/edit/{tenant}")
     public String editTenant(@PathVariable Tenant tenant, Model model) {
         model.addAttribute("operation", "edit");
-        return "/contract/tenantAddEdit";
+        return "contract/tenantAddEdit";
     }
 
     @PostMapping(value = "/tenant/edit/{id}")
@@ -91,7 +91,7 @@ public class TenantController {
         }
         if (result.hasErrors()) {
             model.addAttribute("operation", "edit");
-            return "/contract/tenantAddEdit";
+            return "contract/tenantAddEdit";
         }
         tenantRepository.save(tenant);
         return "redirect:/contract/tenant/list";

@@ -66,7 +66,7 @@ public class ApartmentContractorsController {
             model.addAttribute("contractors", contractorRepository.findAll().stream().filter(c -> !apartmentContractor.getApartment().getApartmentContractors().stream().map(ApartmentContractor::getContractor).toList().contains(c)).toList());
             model.addAttribute("apartmentContractor", apartmentContractor);
             model.addAttribute("apartment", apartmentContractor.getApartment());
-            return "/apartment/apartmentDetails";
+            return "apartment/apartmentDetails";
         }
 
         scheduledPayment.setApartmentContractor(apartmentContractor);

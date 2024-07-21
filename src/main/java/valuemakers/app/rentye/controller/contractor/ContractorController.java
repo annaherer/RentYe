@@ -30,7 +30,7 @@ public class ContractorController {
 
     @RequestMapping(value = "/contractor/list", method = RequestMethod.GET)
     public String getContractors() {
-        return "/contractor/contractorList";
+        return "contractor/contractorList";
     }
 
     @ModelAttribute("apartments")
@@ -59,7 +59,7 @@ public class ContractorController {
         contractor.setTransactionParty(new TransactionParty());
         model.addAttribute("contractor", contractor);
         model.addAttribute("operation", "add");
-        return "/contractor/contractorAddEdit";
+        return "contractor/contractorAddEdit";
     }
 
     @PostMapping(value = "/contractor/add")
@@ -67,7 +67,7 @@ public class ContractorController {
         if (result.hasErrors()) {
             model.addAttribute("contractor", contractor);
             model.addAttribute("operation", "add");
-            return "/contractor/contractorAddEdit";
+            return "contractor/contractorAddEdit";
         }
         this.contractorRepository.save(contractor);
         return "redirect:/contractor/contractor/list";
@@ -76,20 +76,20 @@ public class ContractorController {
     @GetMapping(value = "/contractor/display/{contractor}")
     public String displayTenant(@PathVariable Contractor contractor, Model model) {
         model.addAttribute("operation", "display");
-        return "/contractor/contractorAddEdit";
+        return "contractor/contractorAddEdit";
     }
 
     @GetMapping(value = "/contractor/edit/{contractor}")
     public String editContractor(@PathVariable Contractor contractor, Model model) {
         model.addAttribute("operation", "edit");
-        return "/contractor/contractorAddEdit";
+        return "contractor/contractorAddEdit";
     }
 
     @PostMapping(value = "/contractor/edit/{id}")
     public String updateContractor(@Valid @ModelAttribute Contractor contractor, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("operation", "edit");
-            return "/contractor/contractorAddEdit";
+            return "contractor/contractorAddEdit";
         }
         this.contractorRepository.save(contractor);
         return "redirect:/contractor/contractor/list";

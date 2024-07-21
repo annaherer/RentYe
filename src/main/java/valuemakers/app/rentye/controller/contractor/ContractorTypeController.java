@@ -33,7 +33,7 @@ public class ContractorTypeController {
 
     @GetMapping("/contractorType/list")
     public String getContractorTypes() {
-        return "/contractor/contractorTypeList";
+        return "contractor/contractorTypeList";
     }
 
     @ModelAttribute("contractors")
@@ -55,13 +55,13 @@ public class ContractorTypeController {
     public String getForm(Model model) {
         ContractorType o = new ContractorType();
         model.addAttribute("contractorType", o);
-        return "/contractor/contractorTypeAddEdit";
+        return "contractor/contractorTypeAddEdit";
     }
 
     @PostMapping(value = "/contractorType/add")
     public String processForm(@Valid ContractorType contractorType, BindingResult result) {
         if (result.hasErrors()) {
-            return "/contractor/contractorTypeAddEdit";
+            return "contractor/contractorTypeAddEdit";
         }
         contractorTypeRepository.save(contractorType);
         return "redirect:/contractor/contractorType/list";
@@ -69,13 +69,13 @@ public class ContractorTypeController {
 
     @GetMapping(value = "/contractorType/edit/{contractorType}")
     public String editContractorType(@PathVariable ContractorType contractorType) {
-        return "/contractor/contractorTypeAddEdit";
+        return "contractor/contractorTypeAddEdit";
     }
 
     @PostMapping(value = "/contractorType/edit/{id}")
     public String updateContractorType(@Valid @ModelAttribute ContractorType contractorType, BindingResult result) {
         if (result.hasErrors()) {
-            return "/contractor/contractorTypeAddEdit";
+            return "contractor/contractorTypeAddEdit";
         }
         contractorTypeRepository.save(contractorType);
         return "redirect:/contractor/contractorType/list";

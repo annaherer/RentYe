@@ -47,7 +47,7 @@ public class ApartmentController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String getAllApartments() {
-        return "/apartment/apartmentList";
+        return "apartment/apartmentList";
     }
 
     @GetMapping(value = "/details/{apartment}")
@@ -57,7 +57,7 @@ public class ApartmentController {
         model.addAttribute("contractors", contractorRepository.findAll().stream().filter(c -> !apartment.getApartmentContractors().stream().map(ApartmentContractor::getContractor).toList().contains(c)).toList());
         model.addAttribute("apartmentContractor", apartmentContractor);
         model.addAttribute("scheduledPayment", new ScheduledPayment());
-        return "/apartment/apartmentDetails";
+        return "apartment/apartmentDetails";
     }
 
     @GetMapping("/add")
@@ -65,7 +65,7 @@ public class ApartmentController {
         Apartment apartment = new Apartment();
         model.addAttribute("apartment", apartment);
         model.addAttribute("operation", "add");
-        return "/apartment/apartmentDetails";
+        return "apartment/apartmentDetails";
     }
 
     @PostMapping("/add")
@@ -73,7 +73,7 @@ public class ApartmentController {
         validateDateSold(apartment, result);
         if (result.hasErrors()) {
             model.addAttribute("operation", "add");
-            return "/apartment/apartmentDetails";
+            return "apartment/apartmentDetails";
         }
         apartmentRepository.save(apartment);
         return "redirect:/apartment/details/" + apartment.getId();
@@ -82,7 +82,7 @@ public class ApartmentController {
     @GetMapping(value = "/edit/{apartment}")
     public String editApartment(@PathVariable Apartment apartment, Model model) {
         model.addAttribute("operation", "edit");
-        return "/apartment/apartmentDetails";
+        return "apartment/apartmentDetails";
     }
 
     @PostMapping(value = "/edit/{id}")
@@ -90,7 +90,7 @@ public class ApartmentController {
         validateDateSold(apartment, result);
         if (result.hasErrors()) {
             model.addAttribute("operation", "edit");
-            return "/apartment/apartmentDetails";
+            return "apartment/apartmentDetails";
         }
         this.apartmentRepository.save(apartment);
         return "redirect:/apartment/details/" + apartment.getId();

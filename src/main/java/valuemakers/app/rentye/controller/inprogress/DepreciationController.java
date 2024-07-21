@@ -1,4 +1,4 @@
-package valuemakers.app.rentye.controller.apartment;
+package valuemakers.app.rentye.controller.inprogress;
 
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ public class DepreciationController {
 
     @GetMapping(value = "/depreciation/list")
     public String getDepreciations() {
-        return "/depreciation/view";
+        return "depreciation/view";
     }
 
     @ModelAttribute("depreciations")
@@ -31,13 +31,13 @@ public class DepreciationController {
     public String addDepreciation(Model model) {
         Depreciation depreciation = new Depreciation();
         model.addAttribute("depreciation", depreciation);
-        return "/depreciation/edit";
+        return "depreciation/edit";
     }
 
     @PostMapping("/depreciation/add")
     public String processAddDepreciation(@Valid @ModelAttribute Depreciation depreciation, BindingResult result) {
         if (result.hasErrors()) {
-            return "/depreciation/edit";
+            return "depreciation/edit";
         }
         this.depreciationRepository.save(depreciation);
         return "redirect:/depreciation/list";
@@ -46,13 +46,13 @@ public class DepreciationController {
     @GetMapping(value = "/depreciation/edit/{depreciation}")
     public String editDepreciation(@PathVariable Depreciation depreciation, Model model) {
         model.addAttribute("depreciation", depreciation);
-        return "/depreciation/edit";
+        return "depreciation/edit";
     }
 
     @PostMapping(value = "/depreciation/edit/{id}")
     public String processEditDepreciation(@Valid @ModelAttribute Depreciation depreciation, BindingResult result) {
         if (result.hasErrors()) {
-            return "/depreciation/edit";
+            return "depreciation/edit";
         }
         this.depreciationRepository.save(depreciation);
         return "redirect:/depreciation/list";

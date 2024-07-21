@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -20,7 +21,6 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="/">RentYe</a>
         <a class="navbar-brand" href="/apartment/list">Apartments</a>
-        <%--<a class="navbar-brand" href="/contract/list">Contracts</a>--%>
         <a class="navbar-brand" href="/contract/tenant/list">Tenants</a>
         <a class="navbar-brand" href="/inProgress">Transactions</a> <%--/transaction/list--%>
         <a class="navbar-brand" href="/contractor/contractor/list">Contractors</a>
@@ -53,9 +53,31 @@
                         <li><a class="dropdown-item" href="/inProgress">Progressive tax annual return</a></li>
                     </ul>
                 </li>
+                <sec:authorize access="!isAuthenticated()">
+                    <a class="navbar-brand" href="/login">Login</a>
+                </sec:authorize>
+                <sec:authorize access="isAuthenticated()">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            <sec:authentication var = "username" property="name"/>
+                            <sec:authentication var = "userFirstName" property="principal.userAccount.firstName"/>
+                            Welcome,
+                            <c:if test="${empty userFirstName}">${username}</c:if>
+                            <c:if test="${not empty userFirstName}">${userFirstName}</c:if>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/accountProfile">Account profile</a></li>
+                            <sec:authorize access="hasRole('ADMIN')">
+                                <li><a class="dropdown-item" href="/admin/adminPanel">Admin panel</a></li>
+                            </sec:authorize>
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
+                </sec:authorize>
             </ul>
         </div>
     </div>
 </nav>
 <br>
-<div id = "screen-content">
+<div id="screen-content">

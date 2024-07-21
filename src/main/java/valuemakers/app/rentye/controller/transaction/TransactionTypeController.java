@@ -23,7 +23,7 @@ public class TransactionTypeController {
 
     @GetMapping(value = "/transaction/transactionType/list")
     public String getTransactionTypes() {
-        return "/transaction/transactionTypeList";
+        return "transaction/transactionTypeList";
     }
 
     @ModelAttribute("transactionTypes")
@@ -36,13 +36,13 @@ public class TransactionTypeController {
         TransactionType transactionType = new TransactionType();
         transactionType.setDefaultTransactionSort(TransactionSort.EXCLUDED);
         model.addAttribute("transactionType", transactionType);
-        return "/transaction/transactionTypeAddEdit";
+        return "transaction/transactionTypeAddEdit";
     }
 
     @PostMapping("/transaction/transactionType/add")
     public String processAddTransactionType(@Valid @ModelAttribute TransactionType transactionType, BindingResult result) {
         if (result.hasErrors()) {
-            return "/transaction/transactionTypeAddEdit";
+            return "transaction/transactionTypeAddEdit";
         }
         this.transactionTypeRepository.save(transactionType);
         return "redirect:/transaction/transactionType/list";
@@ -50,13 +50,13 @@ public class TransactionTypeController {
 
     @GetMapping(value = "/transaction/transactionType/edit/{transactionType}")
     public String editTransactionType(@PathVariable TransactionType transactionType) {
-        return "/transaction/transactionTypeAddEdit";
+        return "transaction/transactionTypeAddEdit";
     }
 
     @PostMapping(value = "/transaction/transactionType/edit/{id}")
     public String processEditTransactionType(@Valid @ModelAttribute TransactionType transactionType, BindingResult result) {
         if (result.hasErrors()) {
-            return "/transaction/transactionTypeAddEdit";
+            return "transaction/transactionTypeAddEdit";
         }
         this.transactionTypeRepository.save(transactionType);
         return "redirect:/transaction/transactionType/list";

@@ -1,4 +1,4 @@
-package valuemakers.app.rentye.controller.transaction;
+package valuemakers.app.rentye.controller.inprogress;
 
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ public class PeriodController {
 
     @GetMapping(value = "/period/list")
     public String getPeriods() {
-        return "/period/view";
+        return "period/view";
     }
 
     @ModelAttribute("periods")
@@ -31,13 +31,13 @@ public class PeriodController {
     public String addPeriod(Model model) {
         Period period = new Period();
         model.addAttribute("period", period);
-        return "/period/edit";
+        return "period/edit";
     }
 
     @PostMapping("/period/add")
     public String processAddPeriod(@Valid @ModelAttribute Period period, BindingResult result) {
         if (result.hasErrors()) {
-            return "/period/edit";
+            return "period/edit";
         }
         this.periodRepository.save(period);
         return "redirect:/period/list";
@@ -46,13 +46,13 @@ public class PeriodController {
     @GetMapping(value = "/period/edit/{period}")
     public String editPeriod(@PathVariable Period period, Model model) {
         model.addAttribute("period", period);
-        return "/period/edit";
+        return "period/edit";
     }
 
     @PostMapping(value = "/period/edit/{id}")
     public String processEditPeriod(@Valid @ModelAttribute Period period, BindingResult result) {
         if (result.hasErrors()) {
-            return "/period/edit";
+            return "period/edit";
         }
         this.periodRepository.save(period);
         return "redirect:/period/list";

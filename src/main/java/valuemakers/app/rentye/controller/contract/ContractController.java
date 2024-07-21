@@ -104,7 +104,7 @@ public class ContractController {
 
         if (result.hasErrors()) {
             model.addAttribute("operation", "add");
-            return "/contract/contractDetails";
+            return "contract/contractDetails";
         }
         Contract contract = contractPeriod.getContract();
         if (contract.getContractPeriods() == null) {
@@ -131,7 +131,7 @@ public class ContractController {
 
         if (result.hasErrors()) {
             model.addAttribute("operation", "edit");
-            return "/contract/contractDetails";
+            return "contract/contractDetails";
         }
         contractRepository.save(contractPeriod.getContract());
         contractPeriodRepository.save(contractPeriod);

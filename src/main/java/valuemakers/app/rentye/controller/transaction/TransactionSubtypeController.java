@@ -27,7 +27,7 @@ public class TransactionSubtypeController {
 
     @GetMapping(value = "/transaction/transactionSubtype/list")
     public String getTransactionSubtypes() {
-        return "/transaction/transactionSubtypeList";
+        return "transaction/transactionSubtypeList";
     }
 
     @ModelAttribute("transactionSubtypes")
@@ -44,14 +44,14 @@ public class TransactionSubtypeController {
     public String addTransactionSubtype(Model model) {
         TransactionSubtype transactionSubtype = new TransactionSubtype();
         model.addAttribute("transactionSubtype", transactionSubtype);
-        return "/transaction/transactionSubtypeAddEdit";
+        return "transaction/transactionSubtypeAddEdit";
     }
 
     @PostMapping("/transaction/transactionSubtype/add")
     public String processAddTransactionSubtype(@Valid @ModelAttribute TransactionSubtype transactionSubtype, BindingResult result) {
         checkCodeUnique(transactionSubtype, result);
         if (result.hasErrors()) {
-            return "/transaction/transactionSubtypeAddEdit";
+            return "transaction/transactionSubtypeAddEdit";
         }
         this.transactionSubtypeRepository.save(transactionSubtype);
         return "redirect:/transaction/transactionSubtype/list";
@@ -59,14 +59,14 @@ public class TransactionSubtypeController {
 
     @GetMapping(value = "/transaction/transactionSubtype/edit/{transactionSubtype}")
     public String editTransactionSubtype(@PathVariable TransactionSubtype transactionSubtype) {
-        return "/transaction/transactionSubtypeAddEdit";
+        return "transaction/transactionSubtypeAddEdit";
     }
 
     @PostMapping(value = "/transaction/transactionSubtype/edit/{id}")
     public String processEditTransactionSubtype(@Valid @ModelAttribute TransactionSubtype transactionSubtype, BindingResult result) {
         checkCodeUnique(transactionSubtype, result);
         if (result.hasErrors()) {
-            return "/transaction/transactionSubtypeAddEdit";
+            return "transaction/transactionSubtypeAddEdit";
         }
         this.transactionSubtypeRepository.save(transactionSubtype);
         return "redirect:/transaction/transactionSubtype/list";

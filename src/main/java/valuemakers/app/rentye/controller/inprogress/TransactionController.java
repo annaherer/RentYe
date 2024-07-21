@@ -1,4 +1,4 @@
-package valuemakers.app.rentye.controller.transaction;
+package valuemakers.app.rentye.controller.inprogress;
 
 import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,7 +21,7 @@ public class TransactionController {
 
     @GetMapping(value = "/transaction/list")
     public String getTransactions() {
-        return "/transaction/transactionList";
+        return "transaction/transactionList";
     }
 
     @ModelAttribute("transactions")
@@ -33,13 +33,13 @@ public class TransactionController {
     public String addTransaction(Model model) {
         Transaction transaction = new Transaction();
         model.addAttribute("transaction", transaction);
-        return "/transaction/transactionAddEdit";
+        return "transaction/transactionAddEdit";
     }
 
     @PostMapping("/transaction/add")
     public String processAddTransaction(@Valid @ModelAttribute Transaction transaction, BindingResult result) {
         if (result.hasErrors()) {
-            return "/transaction/transactionAddEdit";
+            return "transaction/transactionAddEdit";
         }
         this.transactionRepository.save(transaction);
         return "redirect:/transaction/list";
@@ -48,13 +48,13 @@ public class TransactionController {
     @GetMapping(value = "/transaction/edit/{transaction}")
     public String editTransaction(@PathVariable Transaction transaction, Model model) {
         model.addAttribute("transaction", transaction);
-        return "/transaction/transactionAddEdit";
+        return "transaction/transactionAddEdit";
     }
 
     @PostMapping(value = "/transaction/edit/{id}")
     public String processEditTransaction(@Valid @ModelAttribute Transaction transaction, BindingResult result) {
         if (result.hasErrors()) {
-            return "/transaction/transactionAddEdit";
+            return "transaction/transactionAddEdit";
         }
         this.transactionRepository.save(transaction);
         return "redirect:/transaction/list";
