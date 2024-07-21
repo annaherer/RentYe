@@ -4,12 +4,12 @@ import valuemakers.app.rentye.model.ContractPeriod;
 import java.time.LocalDate;
 
 public class ContractDTO {
-    Long id;
-    Boolean active;
-    LocalDate startDate;
-    LocalDate endDate;
-    String mainTenant;
-    ContractPeriod lastContractPeriod;
+    private final Long id;
+    private final Boolean active;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
+    private final String mainTenant;
+    private final ContractPeriod lastContractPeriod;
 
     public ContractDTO(Long id, Boolean active, LocalDate startDate, LocalDate endDate, String mainTenant, ContractPeriod lastContractPeriod) {
         this.id = id;

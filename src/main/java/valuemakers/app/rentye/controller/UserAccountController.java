@@ -21,8 +21,8 @@ import valuemakers.app.rentye.dto.UserAccountReducedDTO;
 
 @Controller
 public class UserAccountController {
-    private RentYeUserDetailsManager userDetailsManager;
-    private PasswordEncoder passwordEncoder;
+    private final RentYeUserDetailsManager userDetailsManager;
+    private final PasswordEncoder passwordEncoder;
     public UserAccountController(RentYeUserDetailsManager userDetailsManager, PasswordEncoder passwordEncoder) {
         this.userDetailsManager = userDetailsManager;
         this.passwordEncoder = passwordEncoder;

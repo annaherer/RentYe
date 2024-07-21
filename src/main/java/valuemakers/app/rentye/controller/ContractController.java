@@ -67,7 +67,7 @@ public class ContractController {
         model.addAttribute("operation", "display");
         model.addAttribute("contractPeriod", contractPeriod);
         model.addAttribute("contractPeriodsList", contractPeriod.getContract().getContractPeriods().stream().sorted(Comparator.comparing(ContractPeriod::getSequenceNumber).reversed()).toList());
-        return ("/contract/contractDetails");
+        return ("contract/contractDetails");
     }
 
     @GetMapping("/addContract")
@@ -82,7 +82,7 @@ public class ContractController {
 
         model.addAttribute("operation", "add");
         model.addAttribute("contractPeriod", contractPeriod);
-        return ("/contract/contractDetails");
+        return ("contract/contractDetails");
     }
 
     @GetMapping("/addPeriod")
@@ -94,7 +94,7 @@ public class ContractController {
 
         model.addAttribute("operation", "add");
         model.addAttribute("contractPeriod", contractPeriod);
-        return ("/contract/contractDetails");
+        return ("contract/contractDetails");
     }
 
     @PostMapping({"/addContract", "/addPeriod"})
@@ -121,7 +121,7 @@ public class ContractController {
     public String editContract(@PathVariable ContractPeriod contractPeriod, Model model) {
         model.addAttribute("operation", "edit");
         model.addAttribute("contractPeriod", contractPeriod);
-        return ("/contract/contractDetails");
+        return ("contract/contractDetails");
     }
 
     @PostMapping("/edit/{id}")

@@ -11,7 +11,7 @@ import java.util.Collection;
 
 public class RentYeUserDetails implements UserDetails {
     @Valid
-    private UserAccountDTO userAccountDTO;
+    private final UserAccountDTO userAccountDTO;
 
     public RentYeUserDetails(UserAccountDTO userAccountDTO) {
         this.userAccountDTO = userAccountDTO;
@@ -41,21 +41,6 @@ public class RentYeUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return userAccountDTO.getUsername();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
     }
 
     @Override

@@ -14,8 +14,8 @@ import valuemakers.app.rentye.repository.UserAccountRepository;
 import java.util.Collection;
 
 public class RentYeUserDetailsManager implements UserDetailsManager {
-    UserAccountRepository userAccountRepository;
-    ModelMapper modelMapper;
+    private final UserAccountRepository userAccountRepository;
+    private final ModelMapper modelMapper;
 
     public RentYeUserDetailsManager(UserAccountRepository userAccountRepository, ModelMapper modelMapper) {
         this.userAccountRepository = userAccountRepository;

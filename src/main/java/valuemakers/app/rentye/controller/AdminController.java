@@ -22,8 +22,8 @@ import java.util.Collection;
 @RequestMapping("/admin")
 @Secured("ROLE_ADMIN")
 public class AdminController {
-    private RentYeUserDetailsManager userDetailsManager;
-    private PasswordEncoder passwordEncoder;
+    private final RentYeUserDetailsManager userDetailsManager;
+    private final PasswordEncoder passwordEncoder;
 
     public AdminController(RentYeUserDetailsManager userDetailsManager, PasswordEncoder passwordEncoder) {
         this.userDetailsManager = userDetailsManager;

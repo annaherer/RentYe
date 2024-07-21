@@ -2,7 +2,6 @@ package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import java.util.Date;
 import java.util.List;
 
 @Entity
