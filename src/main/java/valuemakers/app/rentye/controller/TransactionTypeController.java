@@ -1,4 +1,4 @@
-package valuemakers.app.rentye.controller.transaction;
+package valuemakers.app.rentye.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import valuemakers.app.rentye.model.Transaction;
 import valuemakers.app.rentye.model.TransactionSort;
 import valuemakers.app.rentye.model.TransactionType;
 import valuemakers.app.rentye.repository.TransactionTypeRepository;

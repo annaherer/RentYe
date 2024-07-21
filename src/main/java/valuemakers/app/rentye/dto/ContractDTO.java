@@ -1,4 +1,4 @@
-package valuemakers.app.rentye.controller.contract;
+package valuemakers.app.rentye.dto;
 
 import valuemakers.app.rentye.model.ContractPeriod;
 import java.time.LocalDate;

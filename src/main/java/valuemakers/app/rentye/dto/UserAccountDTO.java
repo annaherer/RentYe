@@ -1,4 +1,4 @@
-package valuemakers.app.rentye;
+package valuemakers.app.rentye.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

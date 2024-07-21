@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import valuemakers.app.rentye.RentYeUserDetails;
 import valuemakers.app.rentye.RentYeUserDetailsManager;
-import valuemakers.app.rentye.UserAccountDTO;
+import valuemakers.app.rentye.dto.UserAccountDTO;
 
 import java.util.Collection;
 

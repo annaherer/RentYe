@@ -1,4 +1,4 @@
-package valuemakers.app.rentye.controller.contractor;
+package valuemakers.app.rentye.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;

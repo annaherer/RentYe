@@ -1,4 +1,4 @@
-package valuemakers.app.rentye.controller.fixedasset;
+package valuemakers.app.rentye.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import valuemakers.app.rentye.model.FixedAssetType;
-import valuemakers.app.rentye.model.TransactionType;
 import valuemakers.app.rentye.repository.FixedAssetTypeRepository;
 
 import java.util.Collection;

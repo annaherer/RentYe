@@ -5,7 +5,6 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +13,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import valuemakers.app.rentye.ChangePasswordDTO;
+import valuemakers.app.rentye.dto.ChangePasswordDTO;
 import valuemakers.app.rentye.RentYeUserDetails;
 import valuemakers.app.rentye.RentYeUserDetailsManager;
-import valuemakers.app.rentye.UserAccountReducedDTO;
+import valuemakers.app.rentye.dto.UserAccountReducedDTO;
 
 @Controller
 public class UserAccountController {

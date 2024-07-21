@@ -1,4 +1,4 @@
-package valuemakers.app.rentye;
+package valuemakers.app.rentye.dto;
 
 public class ChangePasswordDTO {
     private String newPassword = "";

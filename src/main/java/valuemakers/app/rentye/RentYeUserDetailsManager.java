@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
+import valuemakers.app.rentye.dto.UserAccountDTO;
 import valuemakers.app.rentye.model.UserAccount;
 import valuemakers.app.rentye.repository.UserAccountRepository;
 
