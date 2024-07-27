@@ -17,15 +17,15 @@
             <td>${contract.endDate}</td>
             <td>${contract.mainTenant}</td>
             <td>
-                <a href="./details/${contract.lastContractPeriod.id}">Details</a>
-                <a href="./deleteContract/${contract.id}">Delete</a>
+                <a class="btn btn-secondary btn-sm" href="${pageContext.request.contextPath}/contract/details/${contract.lastContractPeriod.id}">Details</a>
+                <a class="btn btn-secondary btn-sm" href="${pageContext.request.contextPath}/contract/deleteContract/${contract.id}">Delete</a>
             </td>
         </tr>
     </c:forEach>
 </table>
 <br>
 <div>
-    <a href="./addContract?apartment=${apartment.id}">Add contract</a>
-    <a href="../apartment/list">Back to apartments</a>
+    <a class="btn btn-secondary btn-lg" href="${pageContext.request.contextPath}/contract/addContract?apartment=${apartment.id}">Add</a>
+    <a class="btn btn-secondary btn-lg" href="${pageContext.request.contextPath}/apartment/list">Back</a>
 </div>
 <%@ include file="../footer.jsp" %>

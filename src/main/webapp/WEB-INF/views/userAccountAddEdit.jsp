@@ -17,6 +17,6 @@
     Administrator: <form:checkbox path="admin"/> <form:errors path="admin"/><br>
     Enabled: <form:checkbox path="enabled"/> <form:errors path="enabled"/><br>
     <br><input class="btn btn-secondary btn" type="submit" value="Save">
-    <a class="btn btn-secondary btn" href="/admin/adminPanel" role="button">Back</a>
+    <a class="btn btn-secondary btn" href="${pageContext.request.contextPath}/admin/adminPanel" role="button">Back</a>
 </form:form>
 <%@ include file="footer.jsp" %>

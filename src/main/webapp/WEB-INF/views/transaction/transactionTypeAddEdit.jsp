@@ -5,6 +5,7 @@
 <c:set var="operation" value="Add"/>
 <c:if test="${transactionType.id>0}"> <c:set var="operation" value="Edit"/> </c:if>
 <h1>${operation} transaction type</h1>
+<br>
 <form:form method="post" modelAttribute="transactionType">
     Description: <form:input type="text" path="description"/> <form:errors path="description"/><br>
     Default transaction sort:
@@ -14,6 +15,9 @@
         <form:option value="${TransactionSort.PURCHASE}" label="${TransactionSort.PURCHASE.description}"/>
         <form:option value="${TransactionSort.EXCLUDED}" label="${TransactionSort.EXCLUDED.description}"/>
     </form:select> <form:errors path="defaultTransactionSort"/>
-    <br><input class="btn btn-secondary btn" type="submit" value="Submit">
+    <br>
+    <br>
+    <input class="btn btn-secondary btn-lg" type="submit" value="Save">
+    <a class="btn btn-secondary btn-lg" href="${pageContext.request.contextPath}/transaction/transactionType/list" role="button">Back</a>
 </form:form>
 <%@ include file="../footer.jsp" %>

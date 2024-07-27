@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../header.jsp" %>
-<h1>Transaction subtype list <a class = "error-message">${param.message}</a></h1>
+<h1>Transaction subtypes <a class = "error-message">${param.message}</a></h1>
+<br>
 <table>
     <tr>
         <th>Transaction type</th>
@@ -16,14 +17,14 @@
             <td>${transactionSubtype.description}</td>
             <td>${transactionSubtype.lastIndex}</td>
             <td>
-                <a href="./edit/${transactionSubtype.id}">Edit</a>
-                <a href="./delete/${transactionSubtype.id}">Delete</a>
+                <a class="btn btn-secondary btn" href="${pageContext.request.contextPath}/transaction/transactionSubtype/edit/${transactionSubtype.id}">Edit</a>
+                <a class="btn btn-secondary btn" href="${pageContext.request.contextPath}/transaction/transactionSubtype/delete/${transactionSubtype.id}">Delete</a>
             </td>
         </tr>
     </c:forEach>
 </table>
 <br>
 <div>
-    <a class="btn btn-secondary btn" href="./add">Add transaction subtype</a>
+    <a class="btn btn-secondary btn-lg" href="${pageContext.request.contextPath}/transaction/transactionSubtype/add">Add</a>
 </div>
 <%@ include file="../footer.jsp" %>

@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../header.jsp" %>
-<h1>Apartments list <a class = "error-message">${param.message}</a></h1>
+<h1>Apartments<a class="error-message">${param.message}</a></h1>
+<br>
 <table>
     <tr>
         <th>Description</th>
@@ -12,15 +13,15 @@
             <td>${apartment.description}</td>
             <td>${apartment.active}</td>
             <td>
-                <a href="./details/${apartment.id}">Details</a>
-                <a href="./delete/${apartment.id}">Delete</a>
-                <a href="/contract/list?apartment=${apartment.id}">Contracts</a>
+                <a class="btn btn-secondary btn-sm" href="${pageContext.request.contextPath}/apartment/details/${apartment.id}">Details</a>
+                <a class="btn btn-secondary btn-sm" href="${pageContext.request.contextPath}/apartment/delete/${apartment.id}">Delete</a>
+                <a class="btn btn-secondary btn-sm" href="${pageContext.request.contextPath}/contract/list?apartment=${apartment.id}">Contracts</a>
             </td>
         </tr>
     </c:forEach>
 </table>
 <br>
 <div>
-    <a class="btn btn-secondary btn-lg" href="./add" role="button">Add apartment</a>
+    <a class="btn btn-secondary btn-lg" href="${pageContext.request.contextPath}/apartment/add" role="button">Add</a>
 </div>
 <%@ include file="../footer.jsp" %>

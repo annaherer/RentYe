@@ -3,11 +3,12 @@
 <%@ include file="../header.jsp" %>
 <c:set var="dateFieldFormat" value="date"/>
 <c:if test="${operation == 'display'}">
-    <h1>Display tenant</h1>
+    <h1>Tenant ${tenant.transactionParty.description}</h1>
+    <br>
     <c:set var="dateFieldFormat" value="text"/>
 </c:if>
 <c:if test="${operation == 'add'}"> <h1>Add tenant</h1></c:if>
-<c:if test="${operation == 'edit'}"> <h1>Edit tenant</h1></c:if>
+<c:if test="${operation == 'edit'}"> <h1>Edit tenant ${tenant.transactionParty.description}</h1></c:if>
 <form:form method="post" modelAttribute="tenant">
     <fieldset <c:if test="${operation == 'display'}"> disabled = "disabled"</c:if>>
         Description: <form:input type="text" path="transactionParty.description"/> <form:errors path="transactionParty.description"/><br>
@@ -30,9 +31,10 @@
         PESEL: <form:input type="text" path="pesel"/> <form:errors path="pesel"/><br>
         Active: <form:checkbox path="active"/> <form:errors path="active"/><br>
     </fieldset>
-    <c:if test="${!(operation == 'display')}"> <br><input class="btn btn-secondary btn-lg" type="submit" value="Submit"></c:if>
+    <br>
+    <c:if test="${!(operation == 'display')}">
+        <input class="btn btn-secondary btn-lg" type="submit" value="Save">
+    </c:if>
+    <a class="btn btn-secondary btn-lg" href="${pageContext.request.contextPath}/contract/tenant/list">Back</a>
 </form:form>
-<c:if test="${operation == 'display'}">
-    <a href="../list">Go back</a>
-</c:if>
 <%@ include file="../footer.jsp" %>

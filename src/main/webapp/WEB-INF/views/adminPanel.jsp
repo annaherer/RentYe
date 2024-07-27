@@ -20,8 +20,8 @@
             <td>${userDetails.userAccountDTO.enabled}</td>
             <td>
                 <c:if test="${not(userDetails.userAccountDTO.username eq username)}">
-                    <a href="./editUser/${userDetails.userAccountDTO.id}">Edit</a>
-                    <a href="./deleteUser/${userDetails.userAccountDTO.id}">Delete</a>
+                    <a href="${pageContext.request.contextPath}/admin/editUser/${userDetails.userAccountDTO.id}">Edit</a>
+                    <a href="${pageContext.request.contextPath}/admin/deleteUser/${userDetails.userAccountDTO.id}">Delete</a>
                 </c:if>
             </td>
         </tr>
@@ -29,6 +29,6 @@
 </table>
 <br>
 <div>
-    <a class="btn btn-secondary btn" href="./addUser">Add user</a>
+    <a class="btn btn-secondary btn" href="${pageContext.request.contextPath}/admin/addUser">Add user</a>
 </div>
 <%@ include file="./footer.jsp" %>

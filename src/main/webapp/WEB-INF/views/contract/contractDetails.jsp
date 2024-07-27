@@ -14,7 +14,9 @@
 
 <form:form method="post" modelAttribute="contractPeriod">
     <fieldset <c:if test="${operation == 'display'}"> disabled = "disabled"</c:if>>
+        <br>
         <h2>Contract information <a class = "error-message"> <form:errors path = "contract"/></a></h2>
+        <br>
         Active: <form:input type = "text" path="contract.active" readonly="true"/><br>
         Tenants:
         <form:select path="contract.tenants" multiple="true">
@@ -35,7 +37,9 @@
         </form:select><br><br>
         Deposit amount: <form:input type="number" path="contract.deposit"/> <form:errors path="contract.deposit"/><br>
         Deposit held: <form:input type="number" path="contract.depositHeld"/> <form:errors path="contract.depositHeld"/><br>
+        <br>
         <h2>Contract period (annex) information <a class = "error-message"> <form:errors/></a></h2>
+        <br>
         Active: <form:input type = "text" path="active" readonly="true"/><br>
         Period (annex) number: <form:input type="number" path="sequenceNumber" readonly="true"/><br>
         Main tenant: <form:select itemValue="id" itemLabel="transactionParty.description" path="mainTenant.id"
@@ -54,18 +58,19 @@
     <c:if test="${operation == 'edit' || operation == 'add'}">
         <input class="btn btn-secondary btn-lg" type="submit" value="Save">
         <c:if test="${operation == 'edit'}">
-            <a href="../details/${contractPeriod.id}">Back</a><br>
+            <a class="btn btn-secondary btn-lg" href="${pageContext.request.contextPath}/contract/details/${contractPeriod.id}">Back</a><br>
         </c:if>
         <c:if test="${operation == 'add'}">
-            <a href="./list?apartment=${contractPeriod.contract.apartment.id}">Back to contract list</a><br>
+            <a class="btn btn-secondary btn-lg" href="${pageContext.request.contextPath}/contract/list?apartment=${contractPeriod.contract.apartment.id}">Back</a><br>
         </c:if>
     </c:if>
 </form:form>
 
 <c:if test="${operation == 'display'}">
-    <a href="../edit/${contractPeriod.id}">Edit</a>
-    <a href="../toggleActivePeriod/${contractPeriod.id}">Toggle active</a>
-    <a href="../list?apartment=${contractPeriod.contract.apartment.id}">Back to contract list</a><br>
+    <a class="btn btn-secondary btn-lg" href="${pageContext.request.contextPath}/contract/edit/${contractPeriod.id}">Edit</a>
+    <a class="btn btn-secondary btn-lg" href="${pageContext.request.contextPath}/contract/toggleActivePeriod/${contractPeriod.id}">Toggle active</a>
+    <a class="btn btn-secondary btn-lg" href="${pageContext.request.contextPath}/contract/list?apartment=${contractPeriod.contract.apartment.id}">Back</a><br>
+    <br>
     <h2>Contract periods</h2><br>
     <table>
         <tr>
@@ -86,12 +91,13 @@
                 <td>${contractPeriodFromList.mainTenant.transactionParty.description}</td>
                 <td>${contractPeriodFromList.active}</td>
                 <td>
-                    <a href="../details/${contractPeriodFromList.id}">Details</a>
-                    <a href="../deleteContractPeriod/${contractPeriodFromList.id}">Delete</a>
+                    <a class="btn btn-secondary btn-sm" href="${pageContext.request.contextPath}/contract/details/${contractPeriodFromList.id}">Details</a>
+                    <a class="btn btn-secondary btn-sm" href="${pageContext.request.contextPath}/contract/deleteContractPeriod/${contractPeriodFromList.id}">Delete</a>
                 </td>
             </tr>
         </c:forEach>
     </table>
-    <a href="../addPeriod?contract=${contractPeriod.contract.id}">Add contract period</a>
+    <br>
+    <a class="btn btn-secondary btn-lg" href="${pageContext.request.contextPath}/contract/addPeriod?contract=${contractPeriod.contract.id}">Add</a>
 </c:if>
 <%@ include file="../footer.jsp" %>

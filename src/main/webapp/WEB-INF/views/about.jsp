@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="./header.jsp" %>
 <head>
@@ -27,7 +27,7 @@
 <br>
 <h1>We are RentYe!</h1>
 <br>
-<h1>We help you out to keep your rent income and expenses under control!</h1>
+<h1>We help you out to keep your rent details, income and expenses under control!</h1>
 <br>
 <br>
 <br>
