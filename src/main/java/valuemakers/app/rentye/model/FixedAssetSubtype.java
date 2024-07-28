@@ -3,41 +3,19 @@ package valuemakers.app.rentye.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 public class FixedAssetSubtype {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull
     @ManyToOne
     private FixedAssetType fixedAssetType;
-
     @NotBlank(message = "Subtype description is required.")
     private String description;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public FixedAssetType getFixedAssetType() {
-        return fixedAssetType;
-    }
-
-    public void setFixedAssetType(FixedAssetType fixedAssetType) {
-        this.fixedAssetType = fixedAssetType;
-    }
 }

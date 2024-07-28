@@ -3,8 +3,12 @@ package valuemakers.app.rentye.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import valuemakers.app.rentye.util.TransactionSort;
 
+@Getter
+@Setter
 @Entity
 public class TransactionType {
     public static final Integer TRANSACTION_SORT_REVENUE = 0;
@@ -19,28 +23,4 @@ public class TransactionType {
     private String description;
     @NotNull(message = "Default transaction sort must be filled in.")
     private TransactionSort defaultTransactionSort;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public TransactionSort getDefaultTransactionSort() {
-        return defaultTransactionSort;
-    }
-
-    public void setDefaultTransactionSort(TransactionSort defaultTransactionSort) {
-        this.defaultTransactionSort = defaultTransactionSort;
-    }
 }

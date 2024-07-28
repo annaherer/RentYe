@@ -138,7 +138,7 @@ public class ApartmentService {
     public void deleteScheduledPayment(Long scheduledPaymentId) {
         ScheduledPayment scheduledPayment = scheduledPaymentRepository.findById(scheduledPaymentId).orElseThrow(() -> new ServiceErrorException("Could not find scheduled payment " + scheduledPaymentId));
         try {
-            scheduledPayment.getAppartmentContractor().getScheduledPayments().remove(scheduledPayment);
+            scheduledPayment.getApartmentContractor().getScheduledPayments().remove(scheduledPayment);
             scheduledPaymentRepository.delete(scheduledPayment);
         } catch (DataIntegrityViolationException ex) {
             throw(new ServiceErrorException("Constraint violation while deleting scheduled payment " + scheduledPaymentId).initCause(ex));

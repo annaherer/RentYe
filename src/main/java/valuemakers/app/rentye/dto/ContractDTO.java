@@ -1,8 +1,10 @@
 package valuemakers.app.rentye.dto;
 
+import lombok.Getter;
 import valuemakers.app.rentye.model.ContractPeriod;
 import java.time.LocalDate;
 
+@Getter
 public class ContractDTO {
     private final Long id;
     private final Boolean active;
@@ -18,29 +20,5 @@ public class ContractDTO {
         this.endDate = endDate;
         this.mainTenant = mainTenant;
         this.lastContractPeriod = lastContractPeriod;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public String getMainTenant() {
-        return mainTenant;
-    }
-
-    public ContractPeriod getLastContractPeriod() {
-        return lastContractPeriod;
     }
 }

@@ -2,12 +2,15 @@ package valuemakers.app.rentye.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 public class Apartment {
     @Id
@@ -42,148 +45,4 @@ public class Apartment {
     @Temporal(TemporalType.DATE)
     private LocalDate dateSold;
     private Boolean active;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Depreciation getDepreciation() {
-        return depreciation;
-    }
-
-    public void setDepreciation(Depreciation depreciation) {
-        this.depreciation = depreciation;
-    }
-
-    public List<ApartmentContractor> getApartmentContractors() {
-        return apartmentContractors;
-    }
-
-    public void setApartmentContractors(List<ApartmentContractor> apartmentContractors) {
-        this.apartmentContractors = apartmentContractors;
-    }
-
-    public String getDetailedDescription() {
-        return detailedDescription;
-    }
-
-    public void setDetailedDescription(String detailedDescription) {
-        this.detailedDescription = detailedDescription;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getAcquisitionDate() {
-        return acquisitionDate;
-    }
-
-    public void setAcquisitionDate(LocalDate acquisitionDate) {
-        this.acquisitionDate = acquisitionDate;
-    }
-
-    public LocalDate getAcceptanceToUseDate() {
-        return acceptanceToUseDate;
-    }
-
-    public void setAcceptanceToUseDate(LocalDate acceptanceToUseDate) {
-        this.acceptanceToUseDate = acceptanceToUseDate;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public Integer getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(Integer houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public Integer getFlatNumber() {
-        return flatNumber;
-    }
-
-    public void setFlatNumber(Integer flatNumber) {
-        this.flatNumber = flatNumber;
-    }
-
-    public Double getUsableArea() {
-        return usableArea;
-    }
-
-    public void setUsableArea(Double usableArea) {
-        this.usableArea = usableArea;
-    }
-
-    public String getNotarialActNumber() {
-        return notarialActNumber;
-    }
-
-    public void setNotarialActNumber(String notarialActNumber) {
-        this.notarialActNumber = notarialActNumber;
-    }
-
-    public String getLandMortgageRegisterNumber() {
-        return landMortgageRegisterNumber;
-    }
-
-    public void setLandMortgageRegisterNumber(String landMortgageRegisterNumber) {
-        this.landMortgageRegisterNumber = landMortgageRegisterNumber;
-    }
-
-    public LocalDate getDateSold() {
-        return dateSold;
-    }
-
-    public void setDateSold(LocalDate dateSold) {
-        this.dateSold = dateSold;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
 }
