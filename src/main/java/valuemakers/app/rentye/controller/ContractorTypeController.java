@@ -15,12 +15,10 @@ import valuemakers.app.rentye.repository.ContractorRepository;
 import valuemakers.app.rentye.repository.ContractorTypeRepository;
 
 import java.util.Collection;
-import java.util.logging.Logger;
 
 @RequestMapping("/contractor")
 @Controller
 public class ContractorTypeController {
-    private static final Logger logger = Logger.getLogger(ContractorTypeController.class.getName());
     private final ContractorTypeRepository contractorTypeRepository;
     private final ContractorRepository contractorRepository;
     private final ApartmentRepository apartmentRepository;

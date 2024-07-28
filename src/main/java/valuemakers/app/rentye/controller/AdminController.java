@@ -12,8 +12,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import valuemakers.app.rentye.RentYeUserDetails;
-import valuemakers.app.rentye.RentYeUserDetailsManager;
+import valuemakers.app.rentye.util.RentYeUserDetails;
+import valuemakers.app.rentye.service.RentYeUserDetailsManager;
 import valuemakers.app.rentye.dto.UserAccountDTO;
 
 import java.util.Collection;

@@ -22,13 +22,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @RequestMapping("/contract")
 @Controller
 public class ContractController {
-    private static final Logger logger = Logger.getLogger(ContractController.class.getName());
     private final ContractRepository contractRepository;
     private final ContractPeriodRepository contractPeriodRepository;
     private final TenantRepository tenantRepository;

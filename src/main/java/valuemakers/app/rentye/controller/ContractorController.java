@@ -1,60 +1,45 @@
 package valuemakers.app.rentye.controller;
 
-import jakarta.validation.Valid;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import valuemakers.app.rentye.model.*;
-import valuemakers.app.rentye.repository.*;
+import valuemakers.app.rentye.model.Contractor;
+import valuemakers.app.rentye.model.ContractorType;
+import valuemakers.app.rentye.model.TransactionParty;
+import valuemakers.app.rentye.service.ContractorService;
+import valuemakers.app.rentye.util.ServiceErrorException;
+
 import java.util.Collection;
-import java.util.logging.Logger;
 
 @RequestMapping("/contractor")
 @Controller
 public class ContractorController {
-    private static final Logger logger = Logger.getLogger(ContractorController.class.getName());
-    private final ContractorRepository contractorRepository;
-    private final ApartmentRepository apartmentRepository;
-    private final ContractorTypeRepository contractorTypeRepository;
-    private final ScheduledPaymentRepository scheduledPaymentRepository;
+    private final ContractorService contractorService;
 
-    public ContractorController(ContractorRepository contractorRepository, ApartmentRepository apartmentRepository, ContractorTypeRepository contractorTypeRepository, ScheduledPaymentRepository scheduledPaymentRepository) {
-        this.contractorRepository = contractorRepository;
-        this.apartmentRepository = apartmentRepository;
-        this.contractorTypeRepository = contractorTypeRepository;
-        this.scheduledPaymentRepository = scheduledPaymentRepository;
-    }
-
-    @RequestMapping(value = "/contractor/list", method = RequestMethod.GET)
-    public String getContractors() {
-        return "contractor/contractorList";
-    }
-
-    @ModelAttribute("apartments")
-    public Collection<Apartment> apartments() {
-        return this.apartmentRepository.findAll();
-    }
-
-    @ModelAttribute("categories")
-    public Collection<ScheduledPayment> categories() {
-        return this.scheduledPaymentRepository.findAll();
+    public ContractorController(ContractorService contractorService) {
+        this.contractorService = contractorService;
     }
 
     @ModelAttribute("contractorTypes")
     public Collection<ContractorType> contractorTypes() {
-        return this.contractorTypeRepository.findAll();
+        return this.contractorService.getAllContractorTypes();
     }
 
     @ModelAttribute("contractors")
     public Collection<Contractor> contractors() {
-        return this.contractorRepository.findAll();
+        return this.contractorService.getAllContractors();
+    }
+
+    @GetMapping(value = "/contractor/list")
+    public String getAllContractors() {
+        return "contractor/contractorList";
     }
 
     @GetMapping(value = "/contractor/add")
-    public String getForm(Model model) {
+    public String addContractor(Model model) {
         Contractor contractor = new Contractor();
         contractor.setTransactionParty(new TransactionParty());
         model.addAttribute("contractor", contractor);
@@ -63,45 +48,55 @@ public class ContractorController {
     }
 
     @PostMapping(value = "/contractor/add")
-    public String processForm(@Valid Contractor contractor, BindingResult result, Model model) {
-        if (result.hasErrors()) {
+    public String processAddContractor(@ModelAttribute Contractor contractor, BindingResult result, Model model) {
+        try {
+            contractorService.addContractor(contractor);
+        } catch (ServiceErrorException ex) {
+            for(ObjectError error : ex.getErrors()) result.addError(error);
             model.addAttribute("contractor", contractor);
             model.addAttribute("operation", "add");
             return "contractor/contractorAddEdit";
         }
-        this.contractorRepository.save(contractor);
+
         return "redirect:/contractor/contractor/list";
     }
 
-    @GetMapping(value = "/contractor/display/{contractor}")
-    public String displayTenant(@PathVariable Contractor contractor, Model model) {
+    @GetMapping(value = "/contractor/display/{contractorId}")
+    public String displayContractor(@PathVariable Long contractorId, Model model) {
         model.addAttribute("operation", "display");
+        model.addAttribute("contractor", contractorService.getContractor(contractorId));
         return "contractor/contractorAddEdit";
     }
 
-    @GetMapping(value = "/contractor/edit/{contractor}")
-    public String editContractor(@PathVariable Contractor contractor, Model model) {
+    @GetMapping(value = "/contractor/edit/{contractorId}")
+    public String editContractor(@PathVariable Long contractorId, Model model) {
         model.addAttribute("operation", "edit");
+        model.addAttribute("contractor", contractorService.getContractor(contractorId));
         return "contractor/contractorAddEdit";
     }
 
     @PostMapping(value = "/contractor/edit/{id}")
-    public String updateContractor(@Valid @ModelAttribute Contractor contractor, BindingResult result, Model model) {
-        if (result.hasErrors()) {
+    public String updateContractor(@ModelAttribute Contractor contractor, BindingResult result, Model model) {
+        try {
+            contractorService.updateContractor(contractor);
+        } catch (ServiceErrorException ex) {
+            for(ObjectError error : ex.getErrors()) result.addError(error);
+            model.addAttribute("contractor", contractor);
             model.addAttribute("operation", "edit");
             return "contractor/contractorAddEdit";
         }
-        this.contractorRepository.save(contractor);
+
         return "redirect:/contractor/contractor/list";
     }
 
-    @GetMapping(value = "/contractor/delete/{contractor}")
-    public String delete(@PathVariable Contractor contractor, RedirectAttributes redirectAttributes) {
+    @GetMapping(value = "/contractor/delete/{contractorId}")
+    public String deleteContractor(@PathVariable Long contractorId, RedirectAttributes redirectAttributes) {
         try {
-            this.contractorRepository.delete(contractor);
-        } catch (DataIntegrityViolationException ex) {
-            redirectAttributes.addAttribute("message", "Delete restricted: related records exist");
+            contractorService.deleteContractor(contractorId);
+        } catch (ServiceErrorException ex) {
+            redirectAttributes.addAttribute("message", ex.getMessage());
         }
+
         return "redirect:/contractor/contractor/list";
     }
 }

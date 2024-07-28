@@ -16,12 +16,10 @@ import valuemakers.app.rentye.repository.ContractPeriodRepository;
 import valuemakers.app.rentye.repository.TenantRepository;
 
 import java.util.Collection;
-import java.util.logging.Logger;
 
 @RequestMapping("/contract")
 @Controller
 public class TenantController {
-    private static final Logger logger = Logger.getLogger(TenantController.class.getName());
     private final TenantRepository tenantRepository;
     private final ContractRepository contractRepository;
     private final ContractPeriodRepository contractPeriodRepository;

@@ -1,4 +1,4 @@
-package valuemakers.app.rentye.model;
+package valuemakers.app.rentye.util;
 
 public enum TransactionSort {
     REVENUE {

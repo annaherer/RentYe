@@ -70,11 +70,11 @@
                     <a class="btn btn-secondary btn-sm"
                        href="/contractor/contractor/display/${apartmentContractor.contractor.id}">Display</a>
                     <a class="btn btn-secondary btn-sm"
-                       href="${pageContext.request.contextPath}/apartment/contractors/toggleSettlement/${apartmentContractor.id}">Toggle settlement</a>
+                       href="${pageContext.request.contextPath}/apartment/contractors/toggleSettlement/${apartmentContractor.apartment.id}/${apartmentContractor.contractor.id}">Toggle settlement</a>
                     <a class="btn btn-secondary btn-sm"
-                       href="${pageContext.request.contextPath}/apartment/details/${apartment.id}?apartmentContractor=${apartmentContractor.id}">Schedule payment</a>
+                       href="${pageContext.request.contextPath}/apartment/details/${apartment.id}?contractorId=${apartmentContractor.contractor.id}">Payment schedule</a>
                     <a class="btn btn-secondary btn-sm"
-                       href="${pageContext.request.contextPath}/apartment/contractors/delete/${apartmentContractor.id}">Delete</a>
+                       href="${pageContext.request.contextPath}/apartment/contractors/delete/${apartmentContractor.apartment.id}/${apartmentContractor.contractor.id}">Delete</a>
                 </td>
             </tr>
         </c:forEach>
@@ -87,30 +87,30 @@
             <input class="btn btn-secondary btn-lg" type="submit" value="Add">
         </form:form>
     </c:if>
-    <c:if test="${apartmentContractor.id > 0}">
+    <c:if test="${contractor.id > 0}">
         <%-- Payment schedule for contractor --%>
         <br>
         <br>
-        <h2>Payment schedule for ${apartmentContractor.contractor.transactionParty.description}</h2>
+        <h2>Payment schedule for ${contractor.transactionParty.description}</h2>
         <table>
             <tr>
                 <th>Date</th>
                 <th>Amount</th>
                 <th>Actions</th>
             </tr>
-            <c:forEach var="scheduledPayment" items="${apartmentContractor.scheduledPayments}">
+            <c:forEach var="scheduledPayment" items="${allScheduledPayments}">
                 <tr>
                     <td>${scheduledPayment.date}</td>
                     <td>${scheduledPayment.amount}</td>
                     <td>
                         <a class="btn btn-secondary btn-sm"
-                           href="${pageContext.request.contextPath}/apartment/contractors/deleteScheduledPayment/${scheduledPayment.id}">Delete</a>
+                           href="${pageContext.request.contextPath}/apartment/contractors/deleteScheduledPayment/${apartment.id}/${contractor.id}/${scheduledPayment.id}">Delete</a>
                     </td>
                 </tr>
             </c:forEach>
         </table>
         <br>
-        <form:form action="${pageContext.request.contextPath}/apartment/contractors/addScheduledPayment/${apartmentContractor.id}" method="post"
+        <form:form action="${pageContext.request.contextPath}/apartment/contractors/addScheduledPayment/${apartment.id}/${contractor.id}" method="post"
                    modelAttribute="scheduledPayment">
             <p><b>Schedule payment</b></p>
             <form:input type="date" path="date"/> <form:errors path="date"/>

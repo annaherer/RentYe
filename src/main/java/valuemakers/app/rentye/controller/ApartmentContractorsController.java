@@ -1,84 +1,73 @@
 package valuemakers.app.rentye.controller;
 
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import valuemakers.app.rentye.model.Apartment;
 import valuemakers.app.rentye.model.ApartmentContractor;
 import valuemakers.app.rentye.model.ScheduledPayment;
-import valuemakers.app.rentye.repository.ApartmentContractorRepository;
-import valuemakers.app.rentye.repository.ContractorRepository;
-import valuemakers.app.rentye.repository.ScheduledPaymentRepository;
-
-import java.util.logging.Logger;
+import valuemakers.app.rentye.service.ApartmentService;
+import valuemakers.app.rentye.service.ContractorService;
+import valuemakers.app.rentye.util.ServiceErrorException;
 
 @RequestMapping("/apartment/contractors")
 @Controller
 public class ApartmentContractorsController {
-    private static final Logger logger = Logger.getLogger(ApartmentController.class.getName());
-    private final ContractorRepository contractorRepository;
-    private final ApartmentContractorRepository apartmentContractorRepository;
-    private final ScheduledPaymentRepository scheduledPaymentRepository;
+    private final ApartmentService apartmentService;
+    private final ContractorService contractorService;
 
-    public ApartmentContractorsController(ContractorRepository contractorRepository, ApartmentContractorRepository apartmentContractorRepository, ScheduledPaymentRepository scheduledPaymentRepository) {
-        this.contractorRepository = contractorRepository;
-        this.apartmentContractorRepository = apartmentContractorRepository;
-        this.scheduledPaymentRepository = scheduledPaymentRepository;
+    public ApartmentContractorsController(ApartmentService apartmentService, ContractorService contractorService) {
+        this.apartmentService = apartmentService;
+        this.contractorService = contractorService;
     }
 
-    @PostMapping("/add/{apartment}")
-    public String processAddApartmentContractor(@ModelAttribute ApartmentContractor apartmentContractor, @PathVariable Apartment apartment, RedirectAttributes redirectAttributes, Model model) {
-        if (apartment.getApartmentContractors().stream().map(ac -> ac.getContractor().getId()).anyMatch(c -> c.equals(apartmentContractor.getContractor().getId())))
-            redirectAttributes.addAttribute("message", "Contractor must be unique within apartment");
-        else {
-            apartment.getApartmentContractors().add(apartmentContractor);
-            apartmentContractor.setApartment(apartment);
-            apartmentContractor.setSettlePaymentsWithTenant(false);
-            apartmentContractorRepository.save(apartmentContractor);
+    @PostMapping("/add/{apartmentId}")
+    public String processAddApartmentContractor(@ModelAttribute ApartmentContractor apartmentContractor, @PathVariable Long apartmentId, RedirectAttributes redirectAttributes, Model model) {
+        try {
+            apartmentService.addContractor(apartmentId, apartmentContractor.getContractor().getId(), false);
+        } catch (ServiceErrorException ex) {
+            redirectAttributes.addAttribute("message", ex.getMessage());
         }
 
-        return "redirect:/apartment/details/" + apartment.getId();
+        return "redirect:/apartment/details/" + apartmentId;
     }
 
-    @GetMapping("/delete/{apartmentContractor}")
-    public String deleteApartmentContractor(@PathVariable ApartmentContractor apartmentContractor) {
-        apartmentContractor.getApartment().getApartmentContractors().remove(apartmentContractor);
-        apartmentContractorRepository.delete(apartmentContractor);
-        return "redirect:/apartment/details/" + apartmentContractor.getApartment().getId();
+    @GetMapping("/delete/{apartmentId}/{contractorId}")
+    public String deleteApartmentContractor(@PathVariable Long apartmentId, @PathVariable Long contractorId) {
+        apartmentService.deleteContractor(apartmentId, contractorId);
+        return "redirect:/apartment/details/" + apartmentId;
     }
 
-    @GetMapping("/toggleSettlement/{apartmentContractor}")
-    public String toggleContractorSettlement(@PathVariable ApartmentContractor apartmentContractor) {
-        apartmentContractor.setSettlePaymentsWithTenant(!apartmentContractor.getSettlePaymentsWithTenant());
-        apartmentContractorRepository.save(apartmentContractor);
-        return "redirect:/apartment/details/" + apartmentContractor.getApartment().getId();
+    @GetMapping("/toggleSettlement/{apartmentId}/{contractorId}")
+    public String toggleContractorSettlement(@PathVariable Long apartmentId, @PathVariable Long contractorId) {
+        apartmentService.setContractorSettlePaymentsWithTenant(apartmentId, contractorId,
+                !apartmentService.getContractorSettlePaymentsWithTenant(apartmentId, contractorId));
+
+        return "redirect:/apartment/details/" + apartmentId;
     }
 
-    @PostMapping("/addScheduledPayment/{apartmentContractor}")
-    public String processAddScheduledPayment(@Valid @ModelAttribute ScheduledPayment scheduledPayment, BindingResult result, Model model, @PathVariable ApartmentContractor apartmentContractor) {
-        //To do validations: check for duplicate dates
-
-        if (result.hasErrors()) {
-            model.addAttribute("operation", "display");
-            model.addAttribute("contractors", contractorRepository.findAll().stream().filter(c -> !apartmentContractor.getApartment().getApartmentContractors().stream().map(ApartmentContractor::getContractor).toList().contains(c)).toList());
-            model.addAttribute("apartmentContractor", apartmentContractor);
-            model.addAttribute("apartment", apartmentContractor.getApartment());
+    @PostMapping("/addScheduledPayment/{apartmentId}/{contractorId}")
+    public String processAddScheduledPayment(@ModelAttribute ScheduledPayment scheduledPayment, BindingResult result, @PathVariable Long apartmentId, @PathVariable Long contractorId, Model model) {
+        try {
+            apartmentService.addScheduledPayment(apartmentId, contractorId, scheduledPayment.getDate(), scheduledPayment.getAmount());
+        } catch (ServiceErrorException ex) {
+            for(ObjectError error : ex.getErrors()) result.addError(error);
+            ApartmentController.prepareModelForDisplay(apartmentService, apartmentId, contractorService, contractorId, model);
             return "apartment/apartmentDetails";
         }
 
-        scheduledPayment.setApartmentContractor(apartmentContractor);
-
-        scheduledPaymentRepository.save(scheduledPayment);
-        return "redirect:/apartment/details/" + apartmentContractor.getApartment().getId() + "?apartmentContractor=" + apartmentContractor.getId();
+        return "redirect:/apartment/details/" + apartmentId + "?contractorId=" + contractorId;
     }
 
-    @GetMapping("/deleteScheduledPayment/{scheduledPayment}")
-    public String deleteScheduledPayment(@PathVariable ScheduledPayment scheduledPayment) {
-        scheduledPayment.getAppartmentContractor().getScheduledPayments().remove(scheduledPayment);
-        scheduledPaymentRepository.delete(scheduledPayment);
-        return "redirect:/apartment/details/" + scheduledPayment.getAppartmentContractor().getApartment().getId() + "?apartmentContractor=" + scheduledPayment.getAppartmentContractor().getId();
+    @GetMapping("/deleteScheduledPayment/{apartmentId}/{contractorId}/{scheduledPaymentId}")
+    public String deleteScheduledPayment(@PathVariable Long apartmentId, @PathVariable Long contractorId, @PathVariable Long scheduledPaymentId) {
+        apartmentService.deleteScheduledPayment(scheduledPaymentId);
+
+        Apartment apartment = apartmentService.getApartment(apartmentId);
+        ApartmentContractor apartmentContractor = apartment.getApartmentContractors().stream().filter(ac -> ac.getContractor().getId().equals(contractorId)).findFirst().orElse(null);
+        return "redirect:/apartment/details/" + apartmentId + "?contractorId=" + contractorId;
     }
 }

@@ -21,28 +21,20 @@ public class Apartment {
     private List<ApartmentContractor> apartmentContractors;
 
     @NotBlank(message = "Description is required")
-    @Size(max=600, message="Description must be at most 600 characters.")
     private String description;
     private String detailedDescription;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     private LocalDate acquisitionDate;
-    //@NotBlank(message = "Acceptance to use date is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     private LocalDate acceptanceToUseDate;
-    //@NotBlank(message = "Country is required")
     private String country;
-    //@NotBlank(message = "City is required")
     private String city;
-    //@NotBlank(message = "Zip code is required")
     private String zip;
-    //@NotBlank(message = "Street is required")
     private String street;
-    //@NotBlank(message = "House number is required")
     private Integer houseNumber;
     private Integer flatNumber;
-    //@NotBlank(message = "Usable area is required")
     private Double usableArea;
     private String notarialActNumber;
     private String landMortgageRegisterNumber;

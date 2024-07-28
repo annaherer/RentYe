@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import valuemakers.app.rentye.dto.ChangePasswordDTO;
-import valuemakers.app.rentye.RentYeUserDetails;
-import valuemakers.app.rentye.RentYeUserDetailsManager;
+import valuemakers.app.rentye.util.RentYeUserDetails;
+import valuemakers.app.rentye.service.RentYeUserDetailsManager;
 import valuemakers.app.rentye.dto.UserAccountReducedDTO;
 
 @Controller

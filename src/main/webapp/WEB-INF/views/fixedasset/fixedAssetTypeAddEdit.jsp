@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page import="valuemakers.app.rentye.model.TransactionSort" %>
+<%@ page import="valuemakers.app.rentye.util.TransactionSort" %>
 <%@ include file="../header.jsp" %>
 <c:set var="operation" value="Add"/>
 <c:if test="${fixedAssetType.id>0}"> <c:set var="operation" value="Edit"/> </c:if>
