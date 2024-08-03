@@ -154,8 +154,7 @@ public class ContractController {
             redirectAttributes.addAttribute("message", "Can't remove the only period in the contract, please remove contract instead");
         } else if (!contractPeriod.getSequenceNumber().equals(contract.getContractPeriods().stream().max(Comparator.comparing(ContractPeriod::getSequenceNumber)).get().getSequenceNumber())) {
             redirectAttributes.addAttribute("message", "Only the last contract period can be removed");
-        }
-        else {
+        } else {
             if (contractPeriod.getActive()) {
                 contract.setActive(false);
                 contractRepository.save(contract);
@@ -210,12 +209,10 @@ public class ContractController {
                 return;
             }
 
-            if (currentDate != null) {
-                if (!currentDate.plusDays(1).equals(contractPeriod.getStartDate())) {
-                    String msg = "Inconsistent period dates within contract";
-                    result.addError(new ObjectError("contractPeriod", msg));
-                    return;
-                }
+            if (currentDate != null && !currentDate.plusDays(1).equals(contractPeriod.getStartDate())) {
+                String msg = "Inconsistent period dates within contract";
+                result.addError(new ObjectError("contractPeriod", msg));
+                return;
             }
 
             currentDate = contractPeriod.getEndDate();

@@ -67,7 +67,6 @@ public class ApartmentContractorsController {
         apartmentService.deleteScheduledPayment(scheduledPaymentId);
 
         Apartment apartment = apartmentService.getApartment(apartmentId);
-        ApartmentContractor apartmentContractor = apartment.getApartmentContractors().stream().filter(ac -> ac.getContractor().getId().equals(contractorId)).findFirst().orElse(null);
         return "redirect:/apartment/details/" + apartmentId + "?contractorId=" + contractorId;
     }
 }
