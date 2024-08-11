@@ -20,6 +20,7 @@ public class Apartment {
     @OneToOne
     private Depreciation depreciation;
 
+    //Records / instances of Apartment contrctor will be automatically deleted, when apartment is deleted ({CascadeType.ALL})
     @OneToMany(mappedBy = "apartment", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<ApartmentContractor> apartmentContractors;
 

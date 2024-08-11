@@ -1,6 +1,8 @@
 package valuemakers.app.rentye.util;
 
 public enum TransactionSort {
+
+    //value 0 in the database
     REVENUE {
         @Override
         public String getCode() {return "REV";}
@@ -8,6 +10,7 @@ public enum TransactionSort {
         public String getDescription() {return "Revenue";}
     },
 
+    //value 1 in the database
     COST {
         @Override
         public String getCode() {return "TDC";}
@@ -15,6 +18,7 @@ public enum TransactionSort {
         public String getDescription() {return "Tax Deductible Cost";}
     },
 
+    //value 2 in the database
     PURCHASE {
         @Override
         public String getCode() {return "PRC";}
@@ -22,6 +26,7 @@ public enum TransactionSort {
         public String getDescription() {return "Property Purchase Cost";}
     },
 
+    //value 3 in the database
     EXCLUDED {
         @Override
         public String getCode() {return "EXC";}

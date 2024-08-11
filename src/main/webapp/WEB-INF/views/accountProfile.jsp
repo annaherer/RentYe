@@ -8,7 +8,7 @@
     Last name: <form:input type="text" path="lastName"/> <form:errors path="lastName"/><br>
     Administrator: <form:input type="text" path="admin" readonly = "true"/><br>
     <br><input class="btn btn-secondary btn" type="submit" value="Save">
-    <a class="btn btn-secondary btn" href="${pageContext.request.contextPath}/changePassword" role="button">Change password</a>
-    <a class="btn btn-secondary btn" href="${pageContext.request.contextPath}/" role="button">Home</a>
+    <a class="btn btn-secondary" href="${pageContext.request.contextPath}/changePassword" role="button">Change password</a>
+    <a class="btn btn-secondary" href="${pageContext.request.contextPath}/" role="button">Home</a>
 </form:form>
 <%@ include file="footer.jsp" %>

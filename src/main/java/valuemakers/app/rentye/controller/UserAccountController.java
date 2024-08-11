@@ -30,8 +30,7 @@ public class UserAccountController {
 
     @ModelAttribute("userDetails")
     public RentYeUserDetails getUserDetails() {
-        Authentication authentication;
-        authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken))
             return userDetailsManager.loadUserByUsername(authentication.getName());
         else

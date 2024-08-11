@@ -42,6 +42,7 @@ public class RentYeUserDetailsManager implements UserDetailsManager {
         UserAccount userAccount = modelMapper.map(((RentYeUserDetails) user).getUserAccountDTO(), UserAccount.class);
         userAccount.setId(null);
         userAccountRepository.save(userAccount);
+        ((RentYeUserDetails) user).getUserAccountDTO().setId(userAccount.getId());
     }
 
     @Override
