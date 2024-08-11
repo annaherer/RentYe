@@ -51,11 +51,12 @@
 
 ## Setup
 🔹 Clone repository from GitHub.\
-🔹 Prepare database server and create _rentye_ schema.\
+🔹 Prepare database server and create _rentye_ schema (execute dbcreate.sql).\
 🔹 Update detabase connection details in _application.properties_.\
 🔹 Compile sources with Maven.\
 🔹 Execute application _jar_ file.\
-🔹 Execute rentyeconfig.sql (optional, if you want to have dictionaries initialized).
+🔹 Optional: execute rentyeconfig.sql (initializes dictionaries).\
+🔹 Optional: execute testdata.sql (adds test contractor and apartment data).
 
 Initially application contains user _admin_ with password _password_. It is recommended to create new administration user and delete the _admin_ user during the first use of the application.
 
