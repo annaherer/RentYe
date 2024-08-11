@@ -13,10 +13,10 @@
 ## RentYe
 🔹 RentYe was created to automate managing investment leases for individual investors.\
 🔹 Anticipated benefits:
-- process automation ✅,
-- precise reporting ❌,
-- valuation and forecasting ❌,
-- investment portfolio management ❌.
+  - process automation ✅,
+  - precise reporting ❌,
+  - valuation and forecasting ❌,
+  - investment portfolio management ❌.
 
 ## Technologies
 **Backend**\
@@ -64,10 +64,10 @@ Initially application contains user _admin_ with password _password_. It is reco
 ## Development Status
 🔹 **The Minimum Viable Product** was completed.\
 🔹 Features **_in progress_**:
-- monitoring of revenues, costs and rental income,
-- assessing and forecasting the profitability of private housing investments,
-- REST API,
-- UX.
+  - monitoring of revenues, costs and rental income,
+  - assessing and forecasting the profitability of private housing investments,
+  - REST API,
+  - UX.
 
 
 ## Contact
