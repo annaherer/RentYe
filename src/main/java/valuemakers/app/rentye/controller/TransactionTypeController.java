@@ -38,22 +38,14 @@ public class TransactionTypeController {
         return "transaction/transactionTypeAddEdit";
     }
 
-    @PostMapping("/transaction/transactionType/add")
-    public String processAddTransactionType(@Valid @ModelAttribute TransactionType transactionType, BindingResult result) {
-        if (result.hasErrors()) {
-            return "transaction/transactionTypeAddEdit";
-        }
-        this.transactionTypeRepository.save(transactionType);
-        return "redirect:/transaction/transactionType/list";
-    }
-
     @GetMapping(value = "/transaction/transactionType/edit/{transactionType}")
     public String editTransactionType(@PathVariable TransactionType transactionType) {
         return "transaction/transactionTypeAddEdit";
     }
 
-    @PostMapping(value = "/transaction/transactionType/edit/{id}")
-    public String processEditTransactionType(@Valid @ModelAttribute TransactionType transactionType, BindingResult result) {
+    @PostMapping(value = {"/transaction/transactionType/edit/{id}",
+            "/transaction/transactionType/add"})
+    public String processEditAddTransactionType(@Valid @ModelAttribute TransactionType transactionType, BindingResult result) {
         if (result.hasErrors()) {
             return "transaction/transactionTypeAddEdit";
         }

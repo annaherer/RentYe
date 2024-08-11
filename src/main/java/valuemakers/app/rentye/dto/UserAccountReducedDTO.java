@@ -5,9 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
-public class UserAccountReducedDTO {
+public class UserAccountReducedDTO implements Serializable {
     private String firstName;
     private String lastName;
     @NotBlank

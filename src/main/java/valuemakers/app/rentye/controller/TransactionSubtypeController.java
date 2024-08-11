@@ -46,24 +46,14 @@ public class TransactionSubtypeController {
         model.addAttribute("transactionSubtype", transactionSubtype);
         return "transaction/transactionSubtypeAddEdit";
     }
-
-    @PostMapping("/transaction/transactionSubtype/add")
-    public String processAddTransactionSubtype(@Valid @ModelAttribute TransactionSubtype transactionSubtype, BindingResult result) {
-        checkCodeUnique(transactionSubtype, result);
-        if (result.hasErrors()) {
-            return "transaction/transactionSubtypeAddEdit";
-        }
-        this.transactionSubtypeRepository.save(transactionSubtype);
-        return "redirect:/transaction/transactionSubtype/list";
-    }
-
     @GetMapping(value = "/transaction/transactionSubtype/edit/{transactionSubtype}")
     public String editTransactionSubtype(@PathVariable TransactionSubtype transactionSubtype) {
         return "transaction/transactionSubtypeAddEdit";
     }
 
-    @PostMapping(value = "/transaction/transactionSubtype/edit/{id}")
-    public String processEditTransactionSubtype(@Valid @ModelAttribute TransactionSubtype transactionSubtype, BindingResult result) {
+    @PostMapping(value = {"/transaction/transactionSubtype/edit/{id}",
+            "/transaction/transactionSubtype/add"})
+    public String processEditAddTransactionSubtype(@Valid @ModelAttribute TransactionSubtype transactionSubtype, BindingResult result) {
         checkCodeUnique(transactionSubtype, result);
         if (result.hasErrors()) {
             return "transaction/transactionSubtypeAddEdit";

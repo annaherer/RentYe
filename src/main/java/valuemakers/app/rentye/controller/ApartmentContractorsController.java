@@ -6,7 +6,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import valuemakers.app.rentye.model.Apartment;
 import valuemakers.app.rentye.model.ApartmentContractor;
 import valuemakers.app.rentye.model.ScheduledPayment;
 import valuemakers.app.rentye.service.ApartmentService;
@@ -66,7 +65,6 @@ public class ApartmentContractorsController {
     public String deleteScheduledPayment(@PathVariable Long apartmentId, @PathVariable Long contractorId, @PathVariable Long scheduledPaymentId) {
         apartmentService.deleteScheduledPayment(scheduledPaymentId);
 
-        Apartment apartment = apartmentService.getApartment(apartmentId);
         return "redirect:/apartment/details/" + apartmentId + "?contractorId=" + contractorId;
     }
 }

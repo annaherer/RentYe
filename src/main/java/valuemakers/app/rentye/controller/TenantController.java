@@ -30,7 +30,7 @@ public class TenantController {
         this.contractPeriodRepository = contractPeriodRepository;
     }
 
-    @RequestMapping(value = "/tenant/list", method = RequestMethod.GET)
+    @GetMapping(value = "/tenant/list")
     public String getTenants() {
         return "contract/tenantList";
     }
@@ -82,10 +82,8 @@ public class TenantController {
 
     @PostMapping(value = "/tenant/edit/{id}")
     public String updateTenant(@Valid @ModelAttribute Tenant tenant, BindingResult result, Model model) {
-        if (!tenant.getActive()) {
-            if (!contractRepository.findByTenantsContainingAndActive(tenant, true).isEmpty()) {
+        if (!tenant.getActive() && !contractRepository.findByTenantsContainingAndActive(tenant, true).isEmpty()) {
                 result.addError(new FieldError("Tenant", "active", "The tenant has active contracts"));
-            }
         }
         if (result.hasErrors()) {
             model.addAttribute("operation", "edit");

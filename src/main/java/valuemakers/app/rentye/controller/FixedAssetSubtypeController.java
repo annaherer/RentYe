@@ -46,22 +46,14 @@ public class FixedAssetSubtypeController {
         return "fixedasset/fixedAssetSubtypeAddEdit";
     }
 
-    @PostMapping("/fixedAsset/fixedAssetSubtype/add")
-    public String processAddFixedAssetSubtype(@Valid @ModelAttribute FixedAssetSubtype fixedAssetSubtype, BindingResult result) {
-        if (result.hasErrors()) {
-            return "fixedasset/fixedAssetSubtypeAddEdit";
-        }
-        this.fixedAssetSubtypeRepository.save(fixedAssetSubtype);
-        return "redirect:/fixedAsset/fixedAssetSubtype/list";
-    }
-
     @GetMapping(value = "/fixedAsset/fixedAssetSubtype/edit/{fixedAssetSubtype}")
     public String editFixedAssetSubtype(@PathVariable FixedAssetSubtype fixedAssetSubtype) {
         return "fixedasset/fixedAssetSubtypeAddEdit";
     }
 
-    @PostMapping(value = "/fixedAsset/fixedAssetSubtype/edit/{id}")
-    public String processEditFixedAssetSubtype(@Valid @ModelAttribute FixedAssetSubtype fixedAssetSubtype, BindingResult result) {
+    @PostMapping(value = {"/fixedAsset/fixedAssetSubtype/edit/{id}",
+            "/fixedAsset/fixedAssetSubtype/add"})
+    public String processEditAddFixedAssetSubtype(@Valid @ModelAttribute FixedAssetSubtype fixedAssetSubtype, BindingResult result) {
         if (result.hasErrors()) {
             return "fixedasset/fixedAssetSubtypeAddEdit";
         }

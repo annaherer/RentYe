@@ -56,22 +56,14 @@ public class ContractorTypeController {
         return "contractor/contractorTypeAddEdit";
     }
 
-    @PostMapping(value = "/contractorType/add")
-    public String processForm(@Valid ContractorType contractorType, BindingResult result) {
-        if (result.hasErrors()) {
-            return "contractor/contractorTypeAddEdit";
-        }
-        contractorTypeRepository.save(contractorType);
-        return "redirect:/contractor/contractorType/list";
-    }
-
     @GetMapping(value = "/contractorType/edit/{contractorType}")
     public String editContractorType(@PathVariable ContractorType contractorType) {
         return "contractor/contractorTypeAddEdit";
     }
 
-    @PostMapping(value = "/contractorType/edit/{id}")
-    public String updateContractorType(@Valid @ModelAttribute ContractorType contractorType, BindingResult result) {
+    @PostMapping(value = {"/contractorType/edit/{id}",
+            "/contractorType/add"})
+    public String updateAddContractorType(@Valid @ModelAttribute ContractorType contractorType, BindingResult result) {
         if (result.hasErrors()) {
             return "contractor/contractorTypeAddEdit";
         }

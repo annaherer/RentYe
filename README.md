@@ -1,25 +1,21 @@
 # Welcome 👏 to RentYe app!
 
 
-* [The WHY](#general-information)
-* [Technologies](#technologies-used)
-* [Architecture Design Pattern](#architecture-design-pattern-used)
+* [The WHY](#rentye)
+* [Technologies](#technologies)
+* [Architecture Design Pattern](#architecture-design-pattern)
 * [Features](#features)
 * [Setup](#setup)
-* [Development status](#project-status)
+* [Development status](#development-status)
 * [Contact](#contact)
 
 
 ## RentYe
 🔹 RentYe was created to automate managing investment leases for individual investors.\
 🔹 Anticipated benefits:\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 - process automation ✅,\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 - precise reporting ❌,\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 - valuation and forecasting ❌,\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 - investment portfolio management ❌.
 
 ## Technologies
@@ -59,7 +55,7 @@
 🔹 Update detabase connection details in _application.properties_.\
 🔹 Compile sources with Maven.\
 🔹 Execute application _jar_ file.\
-🔹 Execute rentyeconfig.sql (optional, if you want to have dictionaries initialized).\
+🔹 Execute rentyeconfig.sql (optional, if you want to have dictionaries initialized).
 
 Initially application contains user _admin_ with password _password_. It is recommended to create new administration user and delete the _admin_ user during the first use of the application.
 
@@ -67,13 +63,9 @@ Initially application contains user _admin_ with password _password_. It is reco
 ## Development Status
 🔹 **The Minimum Viable Product** was completed.\
 🔹 Features **_in progress_**:\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 - monitoring of revenues, costs and rental income,\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 - assessing and forecasting the profitability of private housing investments,\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 - REST API,\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 - UX.
 
 

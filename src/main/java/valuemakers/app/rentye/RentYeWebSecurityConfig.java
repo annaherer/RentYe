@@ -19,7 +19,7 @@ public class RentYeWebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChainConfig(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorize) -> authorize
+                .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/contact", "/about", "/WEB-INF/**", "/img/**", "/css/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
