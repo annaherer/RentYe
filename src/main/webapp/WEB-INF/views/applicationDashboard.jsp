@@ -7,7 +7,8 @@
     <br>
     <br>
     <br>
-    <h4>Experience how easy it is to keep your rental income and costs under control!</h4>
+    <h4>Experience how easy it is</h4>
+    <h4>to manage your rentals!</h4>
     <br>
     <br>
     <br>
