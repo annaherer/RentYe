@@ -11,11 +11,6 @@ import valuemakers.app.rentye.util.TransactionSort;
 @Setter
 @Entity
 public class TransactionType {
-    public static final Integer TRANSACTION_SORT_REVENUE = 0;
-    public static final Integer TRANSACTION_SORT_COST = 1;
-    public static final Integer TRANSACTION_SORT_PURCHASE = 2;
-    public static final Integer TRANSACTION_SORT_EXCLUDED = 3;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
