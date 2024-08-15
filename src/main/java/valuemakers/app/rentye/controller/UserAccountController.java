@@ -38,14 +38,14 @@ public class UserAccountController {
     }
 
     @GetMapping("/accountProfile")
-    public String accountProfileSave(Model model, @ModelAttribute("userDetails") RentYeUserDetails userDetails) {
+    public String accountProfile(Model model, @ModelAttribute("userDetails") RentYeUserDetails userDetails) {
         UserAccountReducedDTO userAccountReducedDTO = userDetails.getUserAccountDTO();
         model.addAttribute("userAccountReducedDTO", userAccountReducedDTO);
         return "accountProfile";
     }
 
     @PostMapping("/accountProfile")
-    public String accountProfile(@ModelAttribute("userDetails") RentYeUserDetails userDetails, @Valid @ModelAttribute UserAccountReducedDTO userAccountReducedDTO, BindingResult result) {
+    public String accountProfileSave(@ModelAttribute("userDetails") RentYeUserDetails userDetails, @Valid @ModelAttribute UserAccountReducedDTO userAccountReducedDTO, BindingResult result) {
         userAccountReducedDTO.normalizeStringAttributes();
 
         if (!userDetails.getUserAccountDTO().getEmail().equals(userAccountReducedDTO.getEmail()) &&
