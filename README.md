@@ -18,7 +18,9 @@
   - valuation and forecasting ❌,
   - investment portfolio management ❌.
 
+
 ## Technologies
+
 **Backend**\
 🔹 Java SE 21,\
 🔹 Spring Boot Framework 3.3.0,\
@@ -37,8 +39,10 @@
 🔹 CSS,\
 🔹 Bootstrap Framework v. 5.3.3 (menu, buttons styling),
 
+
 ## Architecture Design Pattern
 🔹 Model - View - Controller (MVC),
+
 
 ## Features
 🔹 Apartments management ✅,\
